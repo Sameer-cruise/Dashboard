@@ -1,0 +1,49 @@
+{
+  "title": "SDO WorkLoad Dashboard",
+  "titleVisible": false,
+  "description": "Capacity Dashboard for Sydney Domestic",
+  "layout": {
+    "customJS": [
+      "jquery.peity.js",
+      "Chart.min.js",
+      "moment.js",
+      "moment-timezone-with-data.min.js"
+    ],
+    "widgets": [
+      {
+        "row": 1,
+        "col": 1,
+        "width": 3,
+        "height": 4,
+        "widget": "SDO",
+        "job": "SDO",
+        "config": "job_SDO"
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "width": 3,
+        "height": 4,
+        "widget": "DETAILS",
+        "job": "DETAILS",
+        "config": "job_DET"
+      }
+    ]
+  },
+  "config": {
+    "job_SDO": {
+      "interval": 60000,
+      "widgetTitle": "Maintenix Dashboard",
+      "location": "SYD",
+      "locationName": "Sydney Domestic",
+      "restURL": "http://localhost:7070/Dashboard/LMODashboard/GraphAustralian?loc=",
+      "TZ": "AUSTRALIA/SYDNEY"
+    },
+    "job_DET": {
+      "interval": 60000,
+      "locationWP": "SYD",
+      "restWPURL": "http://localhost:7070/Dashboard/LMODashboard/GraphDrill?loc=",
+      "TZWP": "AUSTRALIA/SYDNEY"
+    }
+  }
+}

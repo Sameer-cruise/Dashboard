@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 rel. 2 sp2 (http://www.altova.com) by Qantas (Qantas Airways Ltd) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:www.qantas.com:schema:cdm:common:Faults:SystemFault:v1" xmlns:common="urn:www.qantas.com:schema:cdm:common:Common:v1" targetNamespace="urn:www.qantas.com:schema:cdm:common:Faults:SystemFault:v1" elementFormDefault="qualified">
+	<xsd:import namespace="urn:www.qantas.com:schema:cdm:common:Common:v1" schemaLocation="/xsd/schema/cdm/ods/common/Common/v1/Common.xsd"/>
+	<!--  -->	
+	<xsd:element name="systemFault" type="tns:SystemFaultType"/>
+	<xsd:complexType name="SystemFaultType">
+		<xsd:annotation>
+			<xsd:documentation>Describes a system fault or exception, with optional including of nested faults.
+            </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="code" type="tns:SystemFaultCodeType" minOccurs="0"/>
+			<xsd:element name="name" type="tns:SystemFaultNameType" minOccurs="0"/>
+			<xsd:element name="origin" type="tns:SystemFaultOriginType"/>
+			<xsd:element name="message" type="tns:SystemFaultMessageType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="SystemFaultCodeType">
+		<xsd:annotation>
+			<xsd:documentation>
+				A fault or exception code, number or identifier.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="8"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="SystemFaultNameType">
+		<xsd:annotation>
+			<xsd:documentation>
+				A fault or exception name.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="200"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="SystemFaultMessageType">
+		<xsd:annotation>
+			<xsd:documentation>
+				A message describing the fault, or exception detail.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="35000"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="SystemFaultOriginType">
+		<xsd:annotation>
+			<xsd:documentation>
+				Defines source of fault
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="AMADEUS"/>
+			<xsd:enumeration value="SOA"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="ErrorsType">
+		<xsd:sequence>
+			<xsd:element name="error" type="tns:ErrorType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ErrorType">
+		<xsd:sequence>
+			<xsd:element name="code" type="tns:ErrorCodeType">
+				<xsd:annotation>
+					<xsd:documentation>Error code</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="description" type="tns:ErrorDescriptionType">
+				<xsd:annotation>
+					<xsd:documentation>Error Description</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attributeGroup ref="common:SourceGroupType"/>
+	</xsd:complexType>
+	<xsd:simpleType name="ErrorCodeType">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="ErrorDescriptionType">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>		
+</xsd:schema>

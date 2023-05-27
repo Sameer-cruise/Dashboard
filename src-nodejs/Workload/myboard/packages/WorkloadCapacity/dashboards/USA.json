@@ -1,0 +1,53 @@
+{
+  "title": "WorkLoad Capacity for USA",
+  "titleVisible": false,
+  "description": "Overnight workload dashboard for US ports",
+  "layout": {
+    "gridSize": {
+      "columns": 6,
+      "rows": 4
+    },
+    "customJS": [
+      "jquery.peity.js",
+      "Chart.min.js",
+      "moment.js",
+      "moment-timezone-with-data.min.js"
+    ],
+    "widgets": [
+      {
+        "row": 1,
+        "col": 1,
+        "width": 3,
+        "height": 4,
+        "widget": "LAX_ORIG",
+        "job": "LAX",
+        "config": "job_LAX"
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "width": 3,
+        "height": 4,
+        "widget": "SFO_ORIG",
+        "job": "SFO",
+        "config": "job_SFO"
+      }
+    ]
+  },
+  "config": {
+    "job_LAX": {
+      "interval": 60000,
+      "widgetTitle": "Maintenix Dashboard",
+      "location": "LAX",
+      "restURL": "http://localhost:7070/Dashboard/LMODashboard/Graph?loc=",
+      "TZ": "America/Los_Angeles"
+    },
+    "job_SFO": {
+      "interval": 60000,
+      "widgetTitle": "Maintenix Dashboard",
+      "location": "SFO",
+      "restURL": "http://localhost:7070/Dashboard/LMODashboard/Graph?loc=",
+      "TZ": "America/Los_Angeles"
+    }
+  }
+}

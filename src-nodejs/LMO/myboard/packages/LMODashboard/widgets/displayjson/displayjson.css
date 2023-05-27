@@ -1,0 +1,246 @@
+/*
+---------------------------------------------------------------------------
+# TCS - Maintenix Dashboard
+# Copyright (C) 2015.
+# All Rights Reserved.
+---------------------------------------------------------------------------
+# Version: 0.1
+# Last updated: 2015-10-08
+# File: displayjson.css
+---------------------------------------------------------------------------
+*/
+
+/* HTML & Body
+------------------------------------------------------------------------ */
+@charset "utf-8";
+* {
+	margin: 0px;
+	padding: 0px;
+}
+html{
+	height: 100%;
+}
+body {
+	min-height: 100%;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left:0;
+	right: 0;
+}
+
+/* Header - Logo Heading
+------------------------------------------------------------------------ */
+.head{
+	font-size: 28px;
+	font-family: Calibri; /*Helvetica, Verdana, Geneva, sans-serif;*/
+	font-weight: bold;
+	padding-top: 22px;
+	padding-left: 42px;
+	padding-right: 22px;
+	padding-bottom: 40px;
+	color: #ffffff;
+	padding-top: 60px;
+}
+
+.bottom_border{
+border-bottom:10px solid white;
+}
+
+.outage_banner{
+	color:lime;
+	text-align: center;
+	/*position: absolute;*/
+	/*padding-top: 0px;
+	/*padding-bottom: 40px;*/
+	padding-top: 0px;
+	/*right: 150px;*/
+	font-size: 21px;
+	font-family: Calibri;
+	font-weight: bold;
+}
+
+.error{
+    color: #ffffff;
+	text-align: center;
+	position: center;
+	padding-top: 200px;
+	font-size: 40px;
+	font-family: Calibri;
+	font-weight: bold;
+}
+
+/* Header - Date and Time
+------------------------------------------------------------------------ */
+.DashboardTimes {
+	color: #707072;
+	font-size: 22px;
+	font-family: Calibri;
+	font-weight: normal;
+	text-align: left;
+	padding-top: 5px;
+}
+
+/* Table Specifics
+------------------------------------------------------------------------ */
+table {
+	width: 100%;
+	border-collapse: collapse;
+	border: 1px solid #000000 !important;
+	empty-cells: show;
+}
+.flightdata {
+	color: #ffffff;
+	font-size: 22px;
+	font-family: Calibri;
+	font-weight: normal;
+	text-align: center;
+}
+
+/* Table Header
+------------------------------------------------------------------------ */
+th {
+	border: none;
+	font-size: 22px;
+	font-family:Helvetica, Verdana, Geneva, sans-serif;
+	font-weight: normal;
+	background: #8D1919;
+	color: #ffffff;
+	padding: 3px;
+}
+
+/* Table Rows
+------------------------------------------------------------------------ */
+td {
+	border: 1px solid #25383C;
+	font-size: 26px;
+	font-family:Helvetica, Verdana, Geneva, sans-serif;
+	font-weight: normal;
+	color: #ffffff;
+	padding: 1px;
+}
+
+/* Additional
+------------------------------------------------------------------------ */
+.test{
+	background: linear-gradient(#ff0000, #ff6600);
+}
+.Timer{
+	display: inline-block;
+	width: 33%;
+	text-align: left;
+	font-family: Calibri;
+	color: #ffffff;
+}
+
+@-webkit-keyframes invalid {
+  from { background-color: orange; }
+  to { background-color: inherit; }
+}
+@-moz-keyframes invalid {
+  from { background-color: orange; }
+  to { background-color: inherit; }
+}
+@-o-keyframes invalid {
+  from { background-color: orange; }
+  to { background-color: inherit; }
+}
+@keyframes invalid {
+  from { background-color: orange; }
+  to { background-color: inherit; }
+}
+.invalid {
+  -webkit-animation: invalid 5s infinite; /* Safari 4+ */
+  -moz-animation:    invalid 5s infinite; /* Fx 5+ */
+  -o-animation:      invalid 5s infinite; /* Opera 12+ */
+  animation:         invalid 5s infinite; /* IE 10+ */
+}
+
+.ieamber
+{
+background-color: orange;
+}
+
+.iered
+{
+background-color: red;
+}
+
+@-webkit-keyframes red {
+  from { background-color: red; }
+  to { background-color: inherit; }
+}
+@-moz-keyframes red {
+  from { background-color: red; }
+  to { background-color: inherit; }
+}
+@-o-keyframes red {
+  from { background-color: red; }
+  to { background-color: inherit; }
+}
+@keyframes red {
+  from { background-color: red; }
+  to { background-color: inherit; }
+}
+
+.red {
+  -webkit-animation: red 3s infinite; /* Safari 4+ */
+  -moz-animation:    red 3s infinite; /* Fx 5+ */
+  -o-animation:      red 3s infinite; /* Opera 12+ */
+  animation:         red 3s infinite; /* IE 10+ */
+}
+
+/* Footer - Legend
+------------------------------------------------------------------------ */
+.legend {
+	color: #ffffff;
+	text-align: left;
+	position: absolute;
+	/*bottom: 80px;*/
+	bottom: 20px;
+	left: 40px;
+	font-family: Calibri;
+	font-weight: normal;
+	font-size: 20px;
+}
+
+/* Footer - Next Refresh
+------------------------------------------------------------------------ */
+.ref {
+	color: #ffffff;
+	text-align: right;
+	/*position: absolute;*/
+	bottom: 155px;
+	right: 40px;
+	font-size: 22px;
+	font-family: Calibri;
+	font-weight: normal;
+	margin-top: -32px;
+}
+
+/* Footer - Pages
+------------------------------------------------------------------------ */
+div.pager {
+	text-align: center;
+	margin: 1em 0;
+	position: absolute;
+	bottom: -20px;
+	left: 55%;
+}
+div.pager span {
+	color: #ffffff;
+	display: inline-block;
+	width: 1.8em;
+	height: 1.2em;
+	line-height: 1.2;
+	text-align: center;
+	/* cursor: pointer; */
+	/* background: #000000; */
+	/* margin-right: 0.5em; */
+}
+div.pager span.active {
+	background: #8D1919;
+}
+
+/* End displayjson.css
+------------------------------------------------------------------------ */

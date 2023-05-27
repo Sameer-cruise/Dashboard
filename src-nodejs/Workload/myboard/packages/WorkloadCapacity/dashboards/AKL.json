@@ -1,0 +1,48 @@
+{
+  "title": "AKL WorkLoad Dashboard",
+  "titleVisible": false,
+  "description": "Capacity Dashboard for Auckland",
+  "layout": {
+    "customJS": [
+      "jquery.peity.js",
+      "Chart.min.js",
+      "moment.js",
+      "moment-timezone-with-data.min.js"
+    ],
+    "widgets": [
+      {
+        "row": 1,
+        "col": 1,
+        "width": 3,
+        "height": 4,
+        "widget": "AKL",
+        "job": "AKL",
+        "config": "job_AKL"
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "width": 3,
+        "height": 4,
+        "widget": "DETAILS",
+        "job": "DETAILS",
+        "config": "job_DET"
+      }
+    ]
+  },
+  "config": {
+    "job_AKL": {
+      "interval": 60000,
+      "widgetTitle": "Maintenix Dashboard",
+      "location": "AKL",
+      "restURL": "http://localhost:7070/Dashboard/LMODashboard/Graph?loc=",
+      "TZ": "Pacific/Auckland"
+    },
+    "job_DET": {
+      "interval": 60000,
+      "locationWP": "AKL",
+      "restWPURL": "http://localhost:7070/Dashboard/LMODashboard/GraphDrill?loc=",
+      "TZWP": "Pacific/Auckland"
+    }
+  }
+}

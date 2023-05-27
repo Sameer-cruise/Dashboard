@@ -1,0 +1,52 @@
+{
+  "title": "ADL WorkLoad Dashboard",
+  "titleVisible": false,
+  "description": "Capacity Dashboard for Adelaide",
+  "layout": {
+    "gridSize": {
+      "columns": 6,
+      "rows": 4
+    },
+    "customJS": [
+      "jquery.peity.js",
+      "Chart.min.js",
+      "moment.js",
+      "moment-timezone-with-data.min.js"
+    ],
+    "widgets": [{
+        "row": 1,
+        "col": 1,
+        "width": 3,
+        "height": 4,
+        "widget": "ADL",
+        "job": "ADL",
+        "config": "job_ADL"
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "width": 3,
+        "height": 4,
+        "widget": "DETAILS",
+        "job": "DETAILS",
+        "config": "job_DET"
+      }
+    ]
+  },
+  "config": {
+    "job_ADL": {
+      "interval": 60000,
+      "widgetTitle": "Maintenix Dashboard",
+      "location": "ADL",
+      "locationName": "Adelaide",
+      "restURL": "http://localhost:7070/Dashboard/LMODashboard/GraphAustralian?loc=",
+      "TZ": "AUSTRALIA/ADELAIDE"
+    },
+    "job_DET": {
+      "interval": 60000,
+      "locationWP": "ADL",
+      "restWPURL": "http://localhost:7070/Dashboard/LMODashboard/GraphDrill?loc=",
+      "TZWP": "AUSTRALIA/ADELAIDE"
+    }
+  }
+}

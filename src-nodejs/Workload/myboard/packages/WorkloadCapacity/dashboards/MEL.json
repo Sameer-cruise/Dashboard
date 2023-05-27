@@ -1,0 +1,49 @@
+{
+  "title": "MEL WorkLoad Dashboard",
+  "titleVisible": false,
+  "description": "Capacity Dashboard for Melbourne",
+  "layout": {
+    "customJS": [
+      "jquery.peity.js",
+      "Chart.min.js",
+      "moment.js",
+      "moment-timezone-with-data.min.js"
+    ],
+    "widgets": [
+      {
+        "row": 1,
+        "col": 1,
+        "width": 3,
+        "height": 4,
+        "widget": "MEL",
+        "job": "MEL",
+        "config": "job_MEL"
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "width": 3,
+        "height": 4,
+        "widget": "DETAILS",
+        "job": "DETAILS",
+        "config": "job_DET"
+      }
+    ]
+  },
+  "config": {
+    "job_MEL": {
+      "interval": 60000,
+      "widgetTitle": "Maintenix Dashboard",
+      "location": "MEL",
+      "locationName": "Melbourne",
+      "restURL": "http://localhost:7070/Dashboard/LMODashboard/GraphAustralian?loc=",
+      "TZ": "AUSTRALIA/MELBOURNE"
+    },
+    "job_DET": {
+      "interval": 60000,
+      "locationWP": "MEL",
+      "restWPURL": "http://localhost:7070/Dashboard/LMODashboard/GraphDrill?loc=",
+      "TZWP": "AUSTRALIA/MELBOURNE"
+    }
+  }
+}

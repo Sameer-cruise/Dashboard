@@ -1,0 +1,66 @@
+<img src="/widgets/resources?resource=LMODashboard/displayjson/logo.png" style="width: 170px;height: 32px;">
+<script>
+/*setInterval(function() {
+   var totPage = $("#TotalPage").val();
+   var curPage = $("#currPage").val();
+   //alert(curPage+":"+totPage);
+   if(parseInt(curPage)+1 < totPage){
+	   curPage=parseInt(curPage)+1;
+	 $("#currPage").val(curPage);
+   }
+else{
+	 curPage=0;
+	 $("#currPage").val(curPage);
+	}   
+	 $(".page-number:eq("+curPage+")").trigger('click',"newPage:"+curPage);
+}, 10000);*/
+</script>
+<span class="head">Maintenix Dashboard</span><!-- <span class="outage_banner"></span>-->
+<div>
+    <h1 id="nextrefresh" class="ref"></h1>
+</div>
+<div class="DashboardTimes">
+<span id="local" class ="Timer" ></span><span id="global" class="Timer"  ></span>
+<span id="lastrefresh" class ="Timer" >Last Refresh:</span>
+<br />
+<div class="outage_banner"></div>
+<div class="flightdata">
+<table id=flighttable class="paginated">
+    <thead>          
+<tr class="bottom_border">
+<th>REGO</th>
+<th>ARR FLT NO</th>
+<th>ARR TIME</th>
+<th>DEP FLT NO</th>
+<th>DEP TIME</th>
+<th>PORT</th>
+<th>WORK PACK</th>
+<th>MEL</th>
+<th>DUE</th>
+</tr>
+    </thead>
+		<tbody>
+	</tbody>
+</table>
+
+</div>
+<br />
+<input type="hidden" id="currPage" value=0><input type="hidden"  id="TotalPage" value=0>
+<input type="hidden" id="TimeZone" value="">
+</div>
+<div class="error"></div>
+<!--
+<div>
+<h1 id="nextrefresh" class="ref"></h1>
+</div> -->
+<div class="legend">
+<!--LEGEND:<br /> -->
+<ul>
+<li><font color="#ff9900">AMBER</font> - Work Package open within 15 min of departure.</li>
+<li><font color="#ff0000">RED</font> - Work Package open within 5 min of departure.</li>
+<li>Fault/Task Due "YES" = A fault/task is due before the aircraft will reach the next port. Acquit or contact MOC.</li>
+<li>Display will show flights arriving or departing in the next 14 hours.</li>
+<li>Regos highlighted in <font color = "RED">Red</font> have eLogBook enabled.</li>
+</ul>
+</div>
+

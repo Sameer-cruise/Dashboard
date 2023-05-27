@@ -1,0 +1,47 @@
+<settings>
+  <proxies>
+    <proxy>
+      <id>proxy.qcpaws.qantas.com.au</id>
+      <active>true</active>
+      <protocol>http</protocol>
+      <host>proxy.qcpaws.qantas.com.au</host>
+      <port>3128</port>
+      <nonProxyHosts>169.254.169.254|127.0.0.1|localhost.localdomain|localhost|*.qcpaws.qantas.com.au|*.aws.qantas.com.au|*.aws-sentinel.com</nonProxyHosts>
+    </proxy>
+  </proxies>
+  <mirrors>
+    <mirror>
+      <!--This sends everything else to /public -->
+      <id>nexus</id>
+      <mirrorOf>central</mirrorOf>
+      <url>http://nexus.qcpaws.qantas.com.au/nexus/content/groups/public/</url>
+    </mirror>
+  </mirrors>
+  <profiles>
+    <profile>
+      <id>nexus</id>
+      <!--Enable snapshots for the built in central repo to direct -->
+      <!--all requests to nexus via the mirror -->
+      <repositories>
+        <repository>
+          <id>central</id>
+          <url>http://nexus.qcpaws.qantas.com.au/nexus/content/repositories/central/</url>
+          <releases><enabled>true</enabled><updatePolicy>always</updatePolicy></releases>
+          <snapshots><enabled>true</enabled><updatePolicy>always</updatePolicy></snapshots>
+        </repository>
+      </repositories>
+     <pluginRepositories>
+        <pluginRepository>
+          <id>central</id>
+          <url>http://nexus.qcpaws.qantas.com.au/nexus/content/repositories/central/</url>
+          <releases><enabled>true</enabled><updatePolicy>always</updatePolicy></releases>
+          <snapshots><enabled>true</enabled><updatePolicy>always</updatePolicy></snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  </profiles>
+  <activeProfiles>
+    <!--make the profile active all the time -->
+    <activeProfile>nexus</activeProfile>
+  </activeProfiles>
+</settings>

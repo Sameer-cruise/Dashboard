@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 rel. 2 sp2 (http://www.altova.com) by Qantas (Qantas Airways Ltd) -->
+<xsd:schema xmlns:tns="urn:www.qantas.com:schema:cdm:flightnetwork:Airport:v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:common="urn:www.qantas.com:schema:cdm:common:Common:v1" xmlns:airline="urn:www.qantas.com:schema:cdm:flightnetwork:Airline:v1" xmlns:ns1="urn:www.qantas.com:schema:cdm:flightnetwork:Airline:v1" targetNamespace="urn:www.qantas.com:schema:cdm:flightnetwork:Airport:v1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="urn:www.qantas.com:schema:cdm:flightnetwork:Airline:v1" schemaLocation="../../Airline/v1/Airline.xsd"/>
+	<xsd:import namespace="urn:www.qantas.com:schema:cdm:common:Common:v1" schemaLocation="../../Common/v1/Common.xsd"/>
+	<xsd:element name="airport" type="tns:AirportType"/>
+	<xsd:complexType name="FlightGroupType">
+		<xsd:annotation>
+			<xsd:documentation>Flight group</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="airport" type="tns:AirportType">
+				<xsd:annotation>
+					<xsd:documentation>Airport Element</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="date" type="common:DateType">
+				<xsd:annotation>
+					<xsd:documentation>Date in ISO 8601 format (yyyy-mm-dd).  Example: 2001-12-25</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="time" type="common:TimeType">
+				<xsd:annotation>
+					<xsd:documentation>Time in ISO 8601 format (hh:mm).  Example: 14:00</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AirportDisplayNameType">
+		<xsd:sequence>
+			<xsd:element name="airportName" type="tns:AirportNameType">
+				<xsd:annotation>
+					<xsd:documentation>Name of the airport.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="language" type="tns:LanguageType">
+				<xsd:annotation>
+					<xsd:documentation>Language associated with airport name.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AirportType">
+		<xsd:annotation>
+			<xsd:documentation>Details of an airport such as code, name, city etc.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="airportCode" type="tns:AirportCodeType">
+				<xsd:annotation>
+					<xsd:documentation>An AirportCode holds a single 3-letter IATA standard airport code, normally representing the port of arrival or departure of a flight.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="codeContext" type="tns:AirportCodeContextType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Identifies the context of the identifying code, such as IATA, ARC, or internal code, etc.</xsd:documentation>
+					<xsd:documentation xml:lang="en">
+						<LegacyDefaultValue>IATA</LegacyDefaultValue>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="terminal" type="tns:TerminalType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Arrival or departure terminal information. (e.g., Concourse A)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="gate" type="tns:GateType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Arrival or departure gate. (e.g., B12)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="airportDisplayName" type="tns:AirportDisplayNameType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Airport Display Name.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="AirportNameType">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="128"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="AirportCodeContextType">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="32"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="AirportCodeType">
+		<xsd:annotation>
+			<xsd:documentation>An AirportCode holds a single 3-letter IATA standard airport code, normally representing the port of arrival or departure of a flight.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[A-Z]{3}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TerminalType">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="16"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="GateType">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="16"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="LanguageType">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+</xsd:schema>

@@ -1,0 +1,70 @@
+{
+    "title": "WorkLoad Capacity for AUS 2",
+    "titleVisible": false,
+    "description": "Overnight workload dashboard for 3 AUS ports",
+    "layout": {
+        "gridSize": {
+            "columns": 4,
+            "rows": 4
+        },
+        "customJS": [
+            "jquery.peity.js",
+            "Chart.min.js",
+            "moment.js",
+            "moment-timezone-with-data.min.js"
+        ],
+        "widgets": [{
+                "row": 1,
+                "col": 1,
+                "width": 2,
+                "height": 2,
+                "widget": "SDO_ORIG",
+                "job": "SDO",
+                "config": "job_SDO"
+            },
+            {
+                "row": 1,
+                "col": 2,
+                "width": 2,
+                "height": 2,
+                "widget": "SDI_ORIG",
+                "job": "SDI",
+                "config": "job_SDI"
+            }, {
+                "row": 1,
+                "col": 3,
+                "width": 2,
+                "height": 2,
+                "widget": "DRW_ORIG",
+                "job": "DRW",
+                "config": "job_DRW"
+            }
+        ]
+    },
+    "config": {
+        "job_SDO": {
+            "interval": 60000,
+            "widgetTitle": "Maintenix Dashboard",
+            "location": "SYD",
+            "locationName": "Sydney Domestic",
+            "restURL": "http://localhost:7070/Dashboard/LMODashboard/GraphAustralian?loc=",
+            "TZ": "AUSTRALIA/SYDNEY"
+        },
+        "job_SDI": {
+            "interval": 60000,
+            "widgetTitle": "Maintenix Dashboard",
+            "location": "SYDI",
+            "locationName": "Sydney International",
+            "restURL": "http://localhost:7070/Dashboard/LMODashboard/GraphAustralian?loc=",
+            "TZ": "AUSTRALIA/SYDNEY"
+        },
+        "job_DRW": {
+            "interval": 60000,
+            "widgetTitle": "Maintenix Dashboard",
+            "location": "DRW",
+            "locationName": "Darwin",
+            "restURL": "http://localhost:7070/Dashboard/LMODashboard/GraphAustralian?loc=",
+            "TZ": "AUSTRALIA/DARWIN"
+        }
+    }
+}

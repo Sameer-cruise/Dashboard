@@ -1,0 +1,97 @@
+.content{
+	position: relative;
+	.time{
+		position: absolute;
+		top: 10px;
+		left: 0;
+		margin: 0;
+		font-size: 28px;
+		text-align: center;
+		color:rgba(255, 255, 255, 0.8);
+	}
+}
+.chart{
+	.canvas {
+		padding-left: 70px;
+		width:100%;
+	}
+}
+
+.error {
+    position: center;
+	font-size: 50px;
+	color:white;
+	font-weight:bold;
+	text-align:center;
+}
+
+.hide {
+	display:none;
+}
+
+.summary_table {
+	display: flex;
+	flex-direction: row;
+
+	.table1{
+		width: 120px;
+		tr:nth-of-type(1){
+			td {
+				border-color: transparent;
+			}
+		}
+		tr:nth-of-type(2){
+			td {
+				border-left-color: transparent;
+			}
+		}
+	}
+	.table2{
+		width: 88%;
+		tr:nth-of-type(1){
+			td:nth-of-type(even){
+				color: #5478E4;
+			}
+		}
+		tr:nth-of-type(3){
+			td:nth-of-type(even){
+				color: #5478E4;
+			}
+		}
+		tr:nth-of-type(4){
+			td:nth-of-type(even){
+				color: #5478E4;
+			}
+		}
+		tr:nth-of-type(5){
+			td:nth-of-type(even){
+				color: #5478E4;
+			}
+		}
+		tr:nth-of-type(6){
+			td:nth-of-type(even){
+				color: #5478E4;
+			}
+		}
+	}
+}
+
+table{
+	border-collapse: collapse;
+	empty-cells: show;
+}
+
+tr{
+	color:white;
+}
+
+td{
+	text-align:center;
+	fontFamily:"Helvetica, Verdana, Geneva, sans-serif";
+	font-size: 20px;
+	font-weight:normal;
+	width: 100px;
+	border: 1px solid #25383C;
+	padding: 5px;	
+	border: 3px solid white;
+}

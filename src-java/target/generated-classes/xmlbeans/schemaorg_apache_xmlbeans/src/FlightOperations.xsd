@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 rel. 2 sp2 (http://www.altova.com) by Qantas (Qantas Airways Ltd) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:www.qantas.com:schema:cdm:operations:FlightOperations:v1" xmlns:subevents="urn:www.qantas.com:schema:cdm:common:SubEvents:v1" xmlns:events="urn:www.qantas.com:schema:cdm:common:Events:v1" xmlns:airport="urn:www.qantas.com:schema:cdm:flightnetwork:Airport:v1" xmlns:flight="urn:www.qantas.com:schema:cdm:flightnetwork:Flight:v2" targetNamespace="urn:www.qantas.com:schema:cdm:operations:FlightOperations:v1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="urn:www.qantas.com:schema:cdm:common:Events:v1" schemaLocation="../../../common/Events/v1/Events.xsd"/>
+	<xsd:import namespace="urn:www.qantas.com:schema:cdm:common:SubEvents:v1" schemaLocation="../../../common/SubEvents/v1/SubEvents.xsd"/>
+	<xsd:import namespace="urn:www.qantas.com:schema:cdm:flightnetwork:Airport:v1" schemaLocation="../../../common/Airport/v1/Airport.xsd"/>
+	<xsd:import namespace="urn:www.qantas.com:schema:cdm:flightnetwork:Flight:v2" schemaLocation="../../../common/Flight/v2/Flight.xsd"/>
+	<xsd:complexType name="OperationsChangeEventType">
+		<xsd:sequence>
+			<xsd:element name="eventDetails">
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:extension base="events:BaseEventType"/>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="subEvents" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="subEventDetails" type="subevents:BaseSubEventType" minOccurs="0" maxOccurs="unbounded"/>
+						<xsd:element name="otherDetails" minOccurs="0" maxOccurs="unbounded">
+							<xsd:complexType>
+								<xsd:complexContent>
+									<xsd:extension base="tns:otherDetailsType"/>
+								</xsd:complexContent>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="otherDetailsType">
+		<xsd:sequence>
+			<xsd:element name="airportDetails" type="tns:airportDetailsType" minOccurs="0"/>
+			<xsd:element name="EstimateTimeDetails" type="tns:timeDetailsType" minOccurs="0"/>
+			<xsd:element name="ArrivalTimeDetails" type="tns:timeDetailsType" minOccurs="0"/>
+			<xsd:sequence>
+				<xsd:element name="OperatingCarrier" type="flight:CarrierType" minOccurs="0"/>
+				<xsd:element name="MarketingCarrier" type="flight:CarrierType" minOccurs="0"/>
+				<xsd:element name="Rego" type="tns:RegoType" minOccurs="0"/>
+			</xsd:sequence>
+			<xsd:element name="delayInformation" type="tns:delayInformationType" minOccurs="0"/>
+			<xsd:element name="departureTimeDetails" type="tns:timeDetailsType" minOccurs="0"/>
+			<xsd:element name="localDate" type="xsd:dateTime" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="airportDetailsType">
+		<xsd:sequence>
+			<xsd:element name="departureAirport" type="airport:AirportType" minOccurs="0"/>
+			<xsd:element name="arrivalAirport" type="airport:AirportType" minOccurs="0"/>
+			<xsd:element name="movement" type="tns:movementType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="timeDetailsType">
+		<xsd:sequence>
+			<xsd:element name="oldTime" type="xsd:dateTime" minOccurs="0"/>
+			<xsd:element name="newTime" type="xsd:dateTime" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="movementType">
+		<xsd:sequence>
+			<xsd:element name="arrivalAirport" type="airport:AirportType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="delayInformationType">
+		<xsd:sequence>
+			<xsd:element name="reason"/>
+			<xsd:element name="code"/>
+			<xsd:element name="duration"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RegoType">
+		<xsd:sequence>
+			<xsd:element name="oldRegistrationNumber" type="xsd:string"/>
+			<xsd:element name="newRegistrationNumber" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="flightOperationsEventMsgRq" type="tns:OperationsChangeEventType"/>
+</xsd:schema>

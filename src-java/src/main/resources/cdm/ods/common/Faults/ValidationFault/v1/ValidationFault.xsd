@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 rel. 2 sp2 (http://www.altova.com) by TCS (Qantas Airways Ltd) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:www.qantas.com:schema:cdm:common:Faults:ValidationFault:v1" targetNamespace="urn:www.qantas.com:schema:cdm:common:Faults:ValidationFault:v1" elementFormDefault="qualified">
+	<xsd:element name="validationFault" type="tns:ValidationFaultType"/>
+	<xsd:complexType name="ValidationFaultType">
+		<xsd:annotation>
+			<xsd:documentation>Describes a system fault or exception, with optional including of nested faults.
+            </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="field" type="tns:ValidationFaultFieldType"/>
+			<xsd:element name="validationError"  type="tns:ValidationFaultFieldErrorType" maxOccurs="99"/>
+			<xsd:element name="originalValue" type="xsd:anyType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="ValidationFaultFieldErrorType">
+		<xsd:annotation>
+			<xsd:documentation>
+				The validation error that the field triggered
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="ValidationFaultFieldType">
+		<xsd:annotation>
+			<xsd:documentation>
+				A reference to the field that cause the error.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+</xsd:schema>

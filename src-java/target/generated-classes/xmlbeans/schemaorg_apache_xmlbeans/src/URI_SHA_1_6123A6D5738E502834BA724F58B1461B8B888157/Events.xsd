@@ -1,0 +1,158 @@
+<xsd:schema xmlns:tns="urn:www.qantas.com:schema:cdm:common:Events:v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:aidx="http://www.iata.org/IATA/2007/00" targetNamespace="urn:www.qantas.com:schema:cdm:common:Events:v1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="http://www.iata.org/IATA/2007/00" schemaLocation="../../../common/Common/v1/IATA_CommonTypes.xsd"/>
+	<xsd:import namespace="http://www.iata.org/IATA/2007/00" schemaLocation="../../../common/Common/v1/IATA_SimpleTypes.xsd"/>
+	<xsd:import namespace="http://www.iata.org/IATA/2007/00" schemaLocation="../../../common/Common/v1/IATA_AIDX_CommonTypes.xsd"/>
+	<xsd:complexType name="BaseEventType">
+		<xsd:sequence>
+			<xsd:element name="EventName" type="tns:EventNameType"/>
+			<xsd:element name="EventID">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Airline" minOccurs="0" maxOccurs="unbounded">
+							<xsd:annotation>
+								<xsd:documentation>The operating airline code.</xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:simpleContent>
+									<xsd:extension base="aidx:AirlineType">
+										<xsd:attribute name="CodeContext" type="aidx:IATA_CodeType" use="optional">
+											<xsd:annotation>
+												<xsd:documentation xml:lang="en">Specifies the context of the airline
+                                         code, such as IATA or ICAO. Refer to
+                                         IATA PADIS Code List for data element
+                                         3055.</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+									</xsd:extension>
+								</xsd:simpleContent>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="FlightNumber" type="aidx:NumericStringLength1to4" minOccurs="0">
+							<xsd:annotation>
+								<xsd:documentation>The actual flight number.</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="Date" type="xsd:date" minOccurs="0">
+							<xsd:annotation>
+								<xsd:documentation>The Origin</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="ArrivalAirport" minOccurs="0" maxOccurs="unbounded">
+							<xsd:annotation>
+								<xsd:documentation>The scheduled arrival airport.</xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:simpleContent>
+									<xsd:extension base="aidx:StationType">
+										<xsd:attribute name="CodeContext" type="aidx:IATA_CodeType" use="optional">
+											<xsd:annotation>
+												<xsd:documentation xml:lang="en">Specifies the context of the airport
+                                         code, such as IATA or ICAO. Refer to
+                                         IATA PADIS Code List for data element
+                                         3055.</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+									</xsd:extension>
+								</xsd:simpleContent>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="DepartureAirport" minOccurs="0" maxOccurs="unbounded">
+							<xsd:annotation>
+								<xsd:documentation>The scheduled departure airport.</xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:simpleContent>
+									<xsd:extension base="aidx:StationType">
+										<xsd:attribute name="CodeContext" type="aidx:IATA_CodeType" use="optional">
+											<xsd:annotation>
+												<xsd:documentation xml:lang="en">Specifies the context of the airport
+                                         code, such as IATA or ICAO. Refer to
+                                         IATA PADIS Code List for data element
+                                         3055.</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+									</xsd:extension>
+								</xsd:simpleContent>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="ComercialSuffix" type="xsd:string" minOccurs="0">
+							<xsd:annotation>
+								<xsd:documentation>The Comercial suffix</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="Event_SequentID" type="xsd:int" minOccurs="0">
+							<xsd:annotation>
+								<xsd:documentation>Increment this number for every new Insertion into SECTEVENT, with all other Primary key equal</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="Sequnet" type="xsd:int" minOccurs="0">
+							<xsd:annotation>
+								<xsd:documentation>The sequent number in Departure leg</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="ExternalID">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="FlightNumber" type="aidx:NumericStringLength1to4" minOccurs="0">
+							<xsd:annotation>
+								<xsd:documentation>The actual flight number.</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="Date" type="xsd:date" minOccurs="0">
+							<xsd:annotation>
+								<xsd:documentation>The scheduled flight leg departure date.</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="Port" minOccurs="0">
+							<xsd:annotation>
+								<xsd:documentation>The scheduled departure airport.</xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:simpleContent>
+									<xsd:extension base="aidx:StationType">
+										<xsd:attribute name="CodeContext" type="aidx:IATA_CodeType" use="optional">
+											<xsd:annotation>
+												<xsd:documentation xml:lang="en">Specifies the context of the airport
+                                         code, such as IATA or ICAO. Refer to
+                                         IATA PADIS Code List for data element
+                                         3055.</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+									</xsd:extension>
+								</xsd:simpleContent>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="Sequent" type="xsd:int" minOccurs="0">
+							<xsd:annotation>
+								<xsd:documentation>The sequent number in Departure leg</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="EventTime" type="xsd:dateTime"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="EventNameType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="AIRCRAFT_CHANGE"/>
+			<xsd:enumeration value="ESTIMATE_CHANGE"/>
+			<xsd:enumeration value="BOARDING_STATUS_CHANGE"/>
+			<xsd:enumeration value="BLOCKS_OFF"/>
+			<xsd:enumeration value="BLOCKS_ON"/>
+			<xsd:enumeration value="WHEEL_OFF"/>
+			<xsd:enumeration value="WHEEL_ON"/>
+			<xsd:enumeration value="GROUND_RETURN"/>
+			<xsd:enumeration value="AIR_RETURN"/>
+			<xsd:enumeration value="AIR_DIVERSION"/>
+			<xsd:enumeration value="FLIGHT_CANCEL"/>
+			<xsd:enumeration value="FLIGHT_DELETE"/>
+			<xsd:enumeration value="SCHEDULE_CHANGE"/>
+			<xsd:enumeration value="FLIGHT_PLAN"/>
+			<xsd:enumeration value="FLIGHT_DELAY"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

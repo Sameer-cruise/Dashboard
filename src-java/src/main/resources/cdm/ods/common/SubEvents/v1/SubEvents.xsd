@@ -1,0 +1,14 @@
+
+<xsd:schema xmlns:tns="urn:www.qantas.com:schema:cdm:common:SubEvents:v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:www.qantas.com:schema:cdm:common:SubEvents:v1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:complexType name="BaseSubEventType">
+		<xsd:sequence>
+			<xsd:element name="SubEventName" type="tns:SubEventNameType"/>
+			<xsd:element name="SubEventId" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ExternalId" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SubEventTime" type="xsd:dateTime"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="SubEventNameType">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+</xsd:schema>

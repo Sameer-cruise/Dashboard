@@ -1,0 +1,503 @@
+<xs:schema targetNamespace="urn:www.qantas.com:schema:cdm:operations:FlightOperations:RetrieveTileDetailsIOC:v1" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:aidx="http://www.iata.org/IATA/2007/00" xmlns:tns="urn:www.qantas.com:schema:cdm:operations:FlightOperations:RetrieveTileDetailsIOC:v1">
+	<xs:import namespace="http://www.iata.org/IATA/2007/00" schemaLocation="../../../common/Common/v1/IATA_CommonTypes.xsd"/>
+	<xs:import namespace="http://www.iata.org/IATA/2007/00" schemaLocation="../../../common/Common/v1/IATA_SimpleTypes.xsd"/>
+	<xs:import namespace="http://www.iata.org/IATA/2007/00" schemaLocation="../../../common/Common/v1/IATA_AIDX_CommonTypes.xsd"/>
+	
+	<xs:complexType name="FilterDataTypeIOC">
+		<xs:annotation>
+			<xs:documentation>Used to retrieve flight leg info</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<!--  <xs:element name="LegIdentifier" type="aidx:FlightLegIdentifierType">
+     <xs:annotation>
+      <xs:documentation>Uniquely identify a flight leg.</xs:documentation>
+     </xs:annotation>
+    </xs:element>-->
+			<xs:element name="Airline" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The operating airline code.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="aidx:AirlineType">
+							<xs:attribute name="CodeContext" type="aidx:IATA_CodeType" use="optional">
+								<xs:annotation>
+									<xs:documentation xml:lang="en">Specifies the context of the airline
+                                         code, such as IATA or ICAO. Refer to
+                                         IATA PADIS Code List for data element
+                                         3055.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="FlightNumber" type="aidx:NumericStringLength1to4" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The actual flight number.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TripSearch" nillable="true" minOccurs="0" maxOccurs="1" >
+							<xs:annotation>
+							<xs:documentation>Indicates if the request is for Trip Search ('Y') or Tile Search ('N') </xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:minLength value="0"/>
+									<xs:maxLength value="1"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+			
+			<xs:element name="AL_DepartureAirport" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The scheduled arrival airport.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="aidx:StationType">
+							<xs:attribute name="CodeContext" type="aidx:IATA_CodeType" use="optional">
+								<xs:annotation>
+									<xs:documentation xml:lang="en">Specifies the context of the airport
+                                         code, such as IATA or ICAO. Refer to
+                                         IATA PADIS Code List for data element
+                                         3055.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="DL_DepartureAirport" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The scheduled arrival airport.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="aidx:StationType">
+							<xs:attribute name="CodeContext" type="aidx:IATA_CodeType" use="optional">
+								<xs:annotation>
+									<xs:documentation xml:lang="en">Specifies the context of the airport
+                                         code, such as IATA or ICAO. Refer to
+                                         IATA PADIS Code List for data element
+                                         3055.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="DL_ArrivalAirport" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The scheduled arrival airport.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="aidx:StationType">
+							<xs:attribute name="CodeContext" type="aidx:IATA_CodeType" use="optional">
+								<xs:annotation>
+									<xs:documentation xml:lang="en">Specifies the context of the airport
+                                         code, such as IATA or ICAO. Refer to
+                                         IATA PADIS Code List for data element
+                                         3055.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="DepartureStartDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The scheduled flight leg departure start date.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DepartureEndDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The scheduled flight leg departure  end date.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DL_DepartureDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The scheduled departure date of the departure leg.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OriginDateLocal" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The local departure origin date of the departure leg.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OperationalStatus" nillable="true" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Used to inform the airline and airport operational staff
+                       concerning the 1. status of a flight leg, 2. engineering
+                       applied ground status and 3. flight departed or arrived
+                       status.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="CodeContext" type="xs:string" use="optional">
+								<xs:annotation>
+									<xs:documentation xml:lang="en">Specifies the type of status provided . ex:Flight Status, Engineering etc </xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="IOCEventType" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>IOC Event Type like FFP, CREWING, DELAY, WEATHER, EVENT, CALL</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RequestUser" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Application User making the request</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AircraftInfo" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Aircraft information for the the flight leg.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="AircraftType" type="aidx:AirEquipType" nillable="true" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>The IATA aircraft type. Use SSIM Appendix A.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="AircraftSubType" type="aidx:StringLength3" nillable="true" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>The IATA aircraft subtype. Use SSIM Appendix A.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Registration" nillable="true" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>The aircraft registration number as assigned by the
+                          aircraft manufacturer.</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:minLength value="0"/>
+									<xs:maxLength value="10"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="FlightType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Specifies if the flight is international, domestic or
+                       regional.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:enumeration value="International">
+							<xs:annotation>
+								<xs:documentation xml:lang="en">Used to specify if the flight leg is
+                                        international.</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="Domestic">
+							<xs:annotation>
+								<xs:documentation xml:lang="en">Used to specify if the flight leg is
+                                        domestic.</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="Regional">
+							<xs:annotation>
+								<xs:documentation xml:lang="en">Used to specify if the flight leg is
+                                        regional.</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="Hosted">
+							<xs:annotation>
+								<xs:documentation xml:lang="en">Used to specify if the flight leg is
+                                        hosted.</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Priority" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Priority of the aircraft data. (Current ones are those
+                       with a high priority). Selections are All or Current =
+                       ‘Current’ --- current operations /events on that aircraft
+                       ALL’ --- All flight events on that Aircraft</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:enumeration value="Current">
+							<xs:annotation>
+								<xs:documentation xml:lang="en">Current operations /events on that
+                                        aircraft</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="PTS">
+							<xs:annotation>
+								<xs:documentation xml:lang="en">Aircraft on PTS</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="Flying">
+							<xs:annotation>
+								<xs:documentation xml:lang="en">Aircraft in Air</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="Ground">
+							<xs:annotation>
+								<xs:documentation xml:lang="en">Aircraft on Ground</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="Cancel">
+							<xs:annotation>
+								<xs:documentation xml:lang="en">Cancelled FLights</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="All">
+							<xs:annotation>
+								<xs:documentation xml:lang="en">All flight events on that Aircraft</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="RowLimit" type="xs:positiveInteger" minOccurs="0"/>
+			<xs:element name="ResultOrder" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Order of result returned</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="tns:ArrivalDepartureType">
+							<xs:attribute name="Order">
+								<xs:annotation>
+									<xs:documentation>Specifies ascending or descending ordering</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:token">
+										<xs:enumeration value="ASC">
+											<xs:annotation>
+												<xs:documentation xml:lang="en">Ascending order</xs:documentation>
+											</xs:annotation>
+										</xs:enumeration>
+										<xs:enumeration value="DESC">
+											<xs:annotation>
+												<xs:documentation xml:lang="en">Descending order.</xs:documentation>
+											</xs:annotation>
+										</xs:enumeration>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	
+	<xs:complexType name="IOCSubEventType">
+		<xs:annotation>
+			<xs:documentation>Used to send IOC Sub event Details</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+		<xs:element name="eventId" type="xs:integer" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>IOC Event Type like FFP, CREWING, DELAY, WEATHER, EVENT, CALL</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="eventCount" type="xs:integer" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>IOC Event Type like FFP, CREWING, DELAY, WEATHER, EVENT, CALL</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="portOfOccurence" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The scheduled flight leg departure start date.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="eventStatus" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The scheduled flight leg departure start date.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="createdBy" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The scheduled flight leg departure start date.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="eventSummary" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The scheduled flight leg departure start date.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="hasUpdated" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Indicates if there has been any update for the given sub event.</xs:documentation>
+				</xs:annotation>
+			</xs:element>			
+		</xs:sequence>
+	</xs:complexType>
+	
+	
+	<xs:simpleType name="ArrivalDepartureType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Departure">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Ordering based on Departure date time field</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Arrival">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Ordering based on Arrival date time field</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OperationalStatusType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="ChocksOn">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Chocks ON</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ChocksOff">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Chocks OFF</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="WheelsOn">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Wheels On</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="WheelsOff">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Wheels Off</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Departed">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Departed</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Arrived">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Arrived</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="TileDetailsInfoType">
+		<xs:sequence>		
+			<xs:element name="current_station" type="aidx:IATA_CodeType" minOccurs="0"/>
+			<xs:element name="current_bool" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="last_comment" type="xs:string" minOccurs="0"/>
+			<xs:element name="last_comment_time" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="aidx:DateOrDateTimeType">
+							<xs:attribute name="TimeType" type="aidx:IATA_CodeType">
+								<xs:annotation>
+									<xs:documentation>Used to specify the type of operation time.  Refer to IATA PADIS Code List for data element 2005.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="last_comment_user" type="xs:string" minOccurs="0"/>
+			<xs:element name="event_id" type="xs:string" minOccurs="0"/>
+			<xs:element name="event_status" type="xs:string" minOccurs="0"/>
+			<xs:element name="event_owner" type="xs:string" minOccurs="0"/>
+			<xs:element name="event_coordinator" type="xs:string" minOccurs="0"/>
+			<xs:element name="IOCSubEvent" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="tns:IOCSubEventType">
+							<xs:attribute name="EventType" type="xs:string" >
+								<xs:annotation>
+									<xs:documentation xml:lang="en">Specifies the context of the airport
+                                         code, such as IATA or ICAO. Refer to
+                                         IATA PADIS Code List for data element
+                                         3055.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="LegDetails" type="tns:CustomFlightLegType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CustomFlightLegType">
+  <xs:complexContent>
+    <xs:extension base="aidx:FlightLegType">
+      <xs:sequence>
+        <xs:element name="DelayDetails" type="tns:CustomDelayDetailsType" minOccurs="0" maxOccurs="3"/>
+        <xs:element name="GroundTime" minOccurs="0" maxOccurs="3">
+			<xs:annotation>
+				<xs:documentation>The ground time duration</xs:documentation>
+			</xs:annotation>
+			<xs:complexType>
+				<xs:simpleContent>
+					<xs:extension base="xs:decimal">
+						<xs:attribute name="Type" type="xs:string" use="optional">
+							<xs:annotation>
+								<xs:documentation xml:lang="en">Type of ground time like actual, scheduled, estimated</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:extension>
+				</xs:simpleContent>
+			</xs:complexType>
+		</xs:element>
+        
+      </xs:sequence>
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+	
+	<xs:complexType name="CustomDelayDetailsType">
+		<xs:sequence>
+			<xs:element name="ReasonCode" type="aidx:AlphaNumericStringLength1to3">
+				<xs:annotation>
+					<xs:documentation>Used to specify the reason for a departure irregularity delay. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Duration" type="xs:duration" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The duration of the delay.  Format PT2H15M.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Description of the delay</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Owner" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The department owning the delay.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		
+		<xs:attribute name="RepeatIndex" type="aidx:Numeric1to99" use="optional">
+			<xs:annotation>
+				<xs:documentation>Identifies an order for a repeating item.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+ 
+	</xs:complexType>
+	
+	<xs:complexType name="TileDetailsInfoListType">
+		<xs:sequence>
+			<xs:element name="TileDetailsInfo" type="tns:TileDetailsInfoType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="retriveTileDetailsMsgRq" type="tns:FilterDataTypeIOC" />
+
+	<xs:element name="retriveTileDetailsMsgRes" type="tns:TileDetailsInfoListType"/>
+</xs:schema>

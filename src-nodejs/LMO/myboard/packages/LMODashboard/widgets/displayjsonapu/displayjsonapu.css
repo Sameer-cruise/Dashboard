@@ -1,0 +1,213 @@
+/*
+---------------------------------------------------------------------------
+# TCS - Maintenix Dashboard
+# Copyright (C) 2015.
+# All Rights Reserved.
+---------------------------------------------------------------------------
+# Version: 0.1
+# Last updated: 2015-10-08
+# File: displayjson.css
+---------------------------------------------------------------------------
+*/
+
+/* HTML & Body
+------------------------------------------------------------------------ */
+@charset "utf-8";
+* {
+	margin: -3px;
+	padding: 0px;
+	font-family: calibri;
+}
+html{
+	height: 100%;
+}
+body {
+	min-height: 100%;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left:0;
+	right: 0;
+}
+a{
+    text-decoration:none;
+}
+/* Header - Logo Heading
+------------------------------------------------------------------------ */
+.headApu{
+	font-size: 26px;
+	font-family: Calibri;
+	font-weight: bold;
+	/*padding-top: 20px;*/
+	/*padding-left: 20px;*/
+	/*padding-right: 20px;*/
+	/*padding-right: 20px;*/
+	/*padding-bottom: 25px;*/
+	color: #ffffff;
+    /*padding-top: 25px;*/ /*This padding needs to be enabled when the banner is being put in */
+	text-align: center;
+}
+
+
+.apuData {
+	color: #ffffff;
+	font-size: 10px;
+	font-family: Calibri;
+	font-weight: normal;
+	text-align: center;
+}
+
+.apuLabel {
+	margin: 5px;
+    padding: 4px;
+	padding-right:12px;
+	padding-left:12px;
+	background : red;
+	color : white;
+	font-size: bold;
+	width: 80px;
+	cursor: default;
+}
+
+.paginatedApu {
+	border : 0px !important;
+	margin: auto;
+}
+
+/* Header - Date and Time
+------------------------------------------------------------------------ */
+.WorkPackage {
+	color: #707072;
+	font-size: 22px;
+	font-family: Calibri;
+	font-weight: normal;
+}
+
+/* Table Specifics
+------------------------------------------------------------------------ */
+table {
+	
+	border-collapse: collapse;
+	border: 1px solid #000000 !important;
+	empty-cells: show;
+	text-align :center;
+}
+.wpData {
+	color: #ffffff;
+	font-size: 22px;
+	font-family: Calibri;
+	font-weight: normal;
+	text-align: center;
+}
+
+/* Table Header
+------------------------------------------------------------------------ */
+th {
+	border: 1px solid #8D1919;
+	font-size: 26px;
+	font-family: Helvetica, Verdana, Geneva, sans-serif;;
+	font-weight: normal;
+	background: #8D1919;
+	color: #ffffff;
+	padding: 4px;
+}
+
+/* Table Rows
+------------------------------------------------------------------------ */
+td {
+	border: 0px solid #25383C;
+	font-size: 26px;
+	font-family: Helvetica, Verdana, Geneva, sans-serif;;
+	font-weight: normal;
+	color: #ffffff;
+	padding: 1px;
+	text-align: center;
+}
+
+/* Additional
+------------------------------------------------------------------------ */
+
+@-webkit-keyframes invalid {
+  from { background-color: orange; }
+  to { background-color: inherit; }
+}
+@-moz-keyframes invalid {
+  from { background-color: orange; }
+  to { background-color: inherit; }
+}
+@-o-keyframes invalid {
+  from { background-color: orange; }
+  to { background-color: inherit; }
+}
+@keyframes invalid {
+  from { background-color: orange; }
+  to { background-color: inherit; }
+}
+.invalid {
+  -webkit-animation: invalid 5s infinite; /* Safari 4+ */
+  -moz-animation:    invalid 5s infinite; /* Fx 5+ */
+  -o-animation:      invalid 5s infinite; /* Opera 12+ */
+  animation:         invalid 5s infinite; /* IE 10+ */
+}
+
+.ieamber
+{
+background-color: orange;
+}
+
+.inwork
+{
+	background-color: green;
+}
+
+/* Footer - Pages
+------------------------------------------------------------------------ */
+div.pagerapu {
+	text-align: center;
+	margin: 1em 0;
+	position: absolute;
+	/*bottom: -10px;*/
+	left: 48%;
+}
+div.pagerapu span {
+	color: #ffffff;
+	display: inline-block;
+	width: 1.8em;
+	height: 1.2em;
+	line-height: 1.2;
+	text-align: center;
+	/* cursor: pointer; */
+	/* background: #000000; */
+	/* margin-right: 0.5em; */
+}
+div.pagerapu span.active {
+	background: #8D1919;
+}
+.apu-header{
+	width:100%;
+}
+.apu-header h1{
+	/*display:inline-block;*/
+	float:center;
+}
+
+/* Legend
+-----------------------------------------------------------------------------------*/
+.legend {
+	color: #ffffff;
+	text-align: left;
+	position: relative;
+	/*bottom: 80px;*/
+	float :right;
+	bottom: 100px;
+	right: 15px;
+	font-family: Calibri;
+	font-weight: normal;
+	font-size: 20px;
+	line-height:200%;
+
+}
+
+
+/* End displayjson.css
+------------------------------------------------------------------------ */

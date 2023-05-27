@@ -1,0 +1,46 @@
+<!--<img src="/widgets/resources?resource=LMODashboard/displayjsonwp/logo.png" style="width: 170px;height: 32px;">-->
+<script>
+/*setInterval(function() {
+   var totPage = $("#TotalPage").val();
+   var curPage = $("#currPage").val();
+   //alert(curPage+":"+totPage);
+   if(parseInt(curPage)+1 < totPage){
+	   curPage=parseInt(curPage)+1;
+	 $("#currPage").val(curPage);
+   }
+else{
+	 curPage=0;
+	 $("#currPage").val(curPage);
+	}   
+	 $(".page-number:eq("+curPage+")").trigger('click',"newPage:"+curPage);
+}, 10000);*/
+</script>
+<h1 class="headWp">MAINTENIX DASHBOARD</h1>
+<br /><br />
+<div class="WorkPackage">
+<div class="wpData">
+<table id=wptableData class="paginatedWp">
+    <thead>          
+<tr class="bottom_border">
+<th class="elogcap">REGO</th>
+<th>WORK PACK</th>
+<th>SCHEDULE</th>
+<th>STATUS</th>
+</tr>
+    </thead>
+		<tbody>
+	</tbody>
+</table>
+</div>
+<br />
+<input type="hidden" id="currPageWp" value=0><input type="hidden"  id="TotalPage" value=0>
+<input type="hidden" id="TimeZoneWp" value="">
+</div>
+<div class="legend">
+<!--LEGEND:<br /> -->
+<ul>
+<li><font color="GREEN">GREEN</font> – Work Package started.</li>
+<li><font color="#ff9900">AMBER</font> – <font size="4px">Work Package not started 10 min after scheduled start time.</li></font>
+<li>Regos highlighted in <font color = "RED">Red</font> have eLogBook enabled.</li>
+</ul>
+</div>

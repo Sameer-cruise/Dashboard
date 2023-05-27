@@ -1,0 +1,48 @@
+{
+  "title": "LHR WorkLoad Dashboard",
+  "titleVisible": false,
+  "description": "Capacity Dashboard for London",
+  "layout": {
+    "customJS": [
+      "jquery.peity.js",
+      "Chart.min.js",
+      "moment.js",
+      "moment-timezone-with-data.min.js"
+    ],
+    "widgets": [
+      {
+        "row": 1,
+        "col": 1,
+        "width": 3,
+        "height": 4,
+        "widget": "LHR",
+        "job": "LHR",
+        "config": "job_LAX"
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "width": 3,
+        "height": 4,
+        "widget": "DETAILS",
+        "job": "DETAILS",
+        "config": "job_DET"
+      }
+    ]
+  },
+  "config": {
+    "job_LAX": {
+      "interval": 60000,
+      "widgetTitle": "Maintenix Dashboard",
+      "location": "LHR",
+      "restURL": "http://localhost:7070/Dashboard/LMODashboard/Graph?loc=",
+      "TZ": "EUROPE/LONDON"
+    },
+    "job_DET": {
+      "interval": 60000,
+      "locationWP": "LHR",
+      "restWPURL": "http://localhost:7070/Dashboard/LMODashboard/GraphDrill?loc=",
+      "TZWP": "EUROPE/LONDON"
+    }
+  }
+}

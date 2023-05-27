@@ -1,0 +1,149 @@
+.content {
+    font-size: 35px;
+    color: #707072;
+    font-weight: bold;
+    text-align: left;
+}
+.tablecontent {
+    font-size: 30px;
+    color: white;
+    text-align: center;
+	background:black;
+	font-family:'serif';
+}
+.head{
+font-size: 40px;
+font-family:'serif';
+padding:40px;
+color: white;
+padding-top:100px;
+}
+table {
+    border-collapse: collapse;
+	border: 1px solid black;
+}
+
+table {
+	width:100%;
+    border: 1px solid black;
+}
+th {
+    border: 1px solid darkgray;
+	background:#8D1919;
+	color:white;
+}
+td {
+	border: 1px solid darkgray;
+	color:azure;
+}
+.test{
+background:linear-gradient(red, orange);
+
+}
+.Timer{
+	 display: inline-block;
+     width: 33%;
+     text-align: left;
+	 font-family:'serif';
+	 color: white;
+}
+
+@-webkit-keyframes invalid {
+  from { background-color: orange; }
+  to { background-color: inherit; }
+}
+@-moz-keyframes invalid {
+  from { background-color: orange; }
+  to { background-color: inherit; }
+}
+@-o-keyframes invalid {
+  from { background-color: orange; }
+  to { background-color: inherit; }
+}
+@keyframes invalid {
+  from { background-color: orange; }
+  to { background-color: inherit; }
+}
+.invalid {
+  -webkit-animation: invalid 5s infinite; /* Safari 4+ */
+  -moz-animation:    invalid 5s infinite; /* Fx 5+ */
+  -o-animation:      invalid 5s infinite; /* Opera 12+ */
+  animation:         invalid 5s infinite; /* IE 10+ */
+}
+
+
+@-webkit-keyframes red {
+  from { background-color: red; }
+  to { background-color: inherit; }
+}
+@-moz-keyframes red {
+  from { background-color: red; }
+  to { background-color: inherit; }
+}
+@-o-keyframes red {
+  from { background-color: red; }
+  to { background-color: inherit; }
+}
+@keyframes red {
+  from { background-color: red; }
+  to { background-color: inherit; }
+}
+
+.red {
+  -webkit-animation: red 3s infinite; /* Safari 4+ */
+  -moz-animation:    red 3s infinite; /* Fx 5+ */
+  -o-animation:      red 3s infinite; /* Opera 12+ */
+  animation:         red 3s infinite; /* IE 10+ */
+}
+
+.legend
+{
+    color: white;
+    text-align: left;
+	background:black;
+    position:absolute;
+	bottom:80px;
+	left:40px;
+	font-family:'serif';
+	font-weight: bold;
+	font-size: 20px;
+	
+}
+
+.ref
+{
+    color: white;
+    text-align: right;
+	background:black;
+    position:absolute;
+	bottom:120px;
+	right:80px;
+	font-family:'serif';
+	font-weight: bold;
+	font-size: 35px;
+	
+}
+
+div.pager {
+    text-align: center;
+    margin: 1em 0;
+	position:absolute;
+	bottom:0;
+	left:50%;
+}
+
+div.pager span {
+    display: inline-block;
+    width: 1.8em;
+    height: 1.8em;
+    line-height: 1.8;
+    text-align: center;
+    cursor: pointer;
+    background: #000;
+    color: #ffffff;
+    margin-right: 0.5em;
+}
+
+div.pager span.active {
+    background: #8D1919;
+}

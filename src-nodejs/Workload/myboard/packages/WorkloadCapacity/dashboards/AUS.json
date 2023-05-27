@@ -1,0 +1,86 @@
+{
+    "title": "WorkLoad Capacity for AUS",
+    "titleVisible": false,
+    "description": "Overnight workload dashboard for 4 AUS ports",
+    "layout": {
+        "gridSize": {
+            "columns": 4,
+            "rows": 4
+        },
+        "customJS": [
+            "jquery.peity.js",
+            "Chart.min.js",
+            "moment.js",
+            "moment-timezone-with-data.min.js"
+        ],
+        "widgets": [{
+                "row": 1,
+                "col": 1,
+                "width": 2,
+                "height": 2,
+                "widget": "ADL_ORIG",
+                "job": "ADL",
+                "config": "job_ADL"
+            },
+            {
+                "row": 1,
+                "col": 2,
+                "width": 2,
+                "height": 2,
+                "widget": "BNE_ORIG",
+                "job": "BNE",
+                "config": "job_BNE"
+            }, {
+                "row": 1,
+                "col": 3,
+                "width": 2,
+                "height": 2,
+                "widget": "MEL_ORIG",
+                "job": "MEL",
+                "config": "job_MEL"
+            }, {
+                "row": 4,
+                "col": 1,
+                "width": 2,
+                "height": 2,
+                "widget": "PER_ORIG",
+                "job": "PER",
+                "config": "job_PER"
+            }
+        ]
+    },
+    "config": {
+        "job_ADL": {
+            "interval": 60000,
+            "widgetTitle": "Maintenix Dashboard",
+            "location": "ADL",
+            "locationName": "Adelaide",
+            "restURL": "http://localhost:7070/Dashboard/LMODashboard/GraphAustralian?loc=",
+            "TZ": "AUSTRALIA/ADELAIDE"
+        },
+        "job_BNE": {
+            "interval": 60000,
+            "widgetTitle": "Maintenix Dashboard",
+            "location": "BNE",
+            "locationName": "Brisbane",
+            "restURL": "http://localhost:7070/Dashboard/LMODashboard/GraphAustralian?loc=",
+            "TZ": "AUSTRALIA/BRISBANE"
+        },
+        "job_MEL": {
+            "interval": 60000,
+            "widgetTitle": "Maintenix Dashboard",
+            "location": "MEL",
+            "locationName": "Melbourne",
+            "restURL": "http://localhost:7070/Dashboard/LMODashboard/GraphAustralian?loc=",
+            "TZ": "AUSTRALIA/MELBOURNE"
+        },
+        "job_PER": {
+            "interval": 60000,
+            "widgetTitle": "Maintenix Dashboard",
+            "location": "PER",
+            "locationName": "Perth",
+            "restURL": "http://localhost:7070/Dashboard/LMODashboard/GraphAustralian?loc=",
+            "TZ": "AUSTRALIA/PERTH"
+        }
+    }
+}

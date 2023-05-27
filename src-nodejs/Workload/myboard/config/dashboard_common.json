@@ -1,0 +1,11 @@
+{
+  "config" : {
+
+    "job" : {
+        "interval" : 60000,
+        "widgetTitle" : "Maintenix Dashboard",
+		"restURL":"http://localhost:5000/Dashboard/LMODashboard/Graph?loc=",
+		"location":""
+      }
+ }
+ }

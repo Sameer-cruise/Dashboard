@@ -1,0 +1,52 @@
+{
+  "title": "DRW WorkLoad Dashboard",
+  "titleVisible": false,
+  "description": "Capacity Dashboard for Darwin",
+  "layout": {
+    "gridSize": {
+      "columns": 6,
+      "rows": 4
+    },
+    "customJS": [
+      "jquery.peity.js",
+      "Chart.min.js",
+      "moment.js",
+      "moment-timezone-with-data.min.js"
+    ],
+    "widgets": [{
+        "row": 1,
+        "col": 1,
+        "width": 3,
+        "height": 4,
+        "widget": "DRW",
+        "job": "DRW",
+        "config": "job_DRW"
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "width": 3,
+        "height": 4,
+        "widget": "DETAILS",
+        "job": "DETAILS",
+        "config": "job_DET"
+      }
+    ]
+  },
+  "config": {
+    "job_DRW": {
+      "interval": 60000,
+      "widgetTitle": "Maintenix Dashboard",
+      "location": "DRW",
+      "locationName": "Darwin",
+      "restURL": "http://localhost:7070/Dashboard/LMODashboard/GraphAustralian?loc=",
+      "TZ": "AUSTRALIA/DARWIN"
+    },
+    "job_DET": {
+      "interval": 60000,
+      "locationWP": "DRW",
+      "restWPURL": "http://localhost:7070/Dashboard/LMODashboard/GraphDrill?loc=",
+      "TZWP": "AUSTRALIA/DARWIN"
+    }
+  }
+}

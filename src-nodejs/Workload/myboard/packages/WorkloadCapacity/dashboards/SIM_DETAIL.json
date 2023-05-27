@@ -1,0 +1,33 @@
+{
+    "enabled": true,
+    "title": "SIM WP Detail",
+    "titleVisible": false,
+    "description": "Seven day data for Sydney Line Maintenance",
+    "layout": {
+      "customJS": [
+        "jquery.peity.js",
+        "Chart.min.js",
+        "moment.js",
+        "moment-timezone-with-data.min.js"
+      ],
+      "widgets": [
+        {
+          "row": 1,
+          "col": 1,
+          "width": 4,
+          "height": 4,
+          "widget": "SAM_DETAILS",
+          "job": "SAM_DETAILS",
+          "config": "job_SAM_DETAILS"
+        }
+      ]
+    },
+    "config": {
+      "job_SAM_DETAILS": {
+        "interval": 60000,
+        "widgetTitle": "Sydney Aircraft Maintenance Chart",
+        "restURL": "http://localhost:7070/Dashboard/LMODashboard/LocationsSamDetail",
+        "TZ": "AUSTRALIA/SYDNEY"
+      }
+    }
+  }

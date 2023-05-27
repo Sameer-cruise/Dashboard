@@ -1,0 +1,99 @@
+---
+Type: "aws/autoscale"
+Stage: "00"
+Persist: false
+IngressPoint: true
+ 
+Configuration:
+  Features:
+      Type: Pipeline::Features
+      Properties:
+          Features:
+              Datadog: enabled
+              Qualys:
+                Enabled: true       
+                Recipients: ["goutham.r@qantas.com.au","qantasmaintenixandtraxsupport@qantas.onmicrosoft.com"]
+  DashboardInstance:
+    Type: "AWS::EC2::Instance"
+    Metadata:
+      AWS::CloudFormation::Init:
+        configSets:
+          Deploy: [ "Bootstrap" ]
+        Bootstrap:
+          commands:
+            01-SetupEnvironment:
+              command: "bash /root/payload/scripts/bake/SetupEnvironment.sh"
+            02-CopyArtefacts:
+              command: "bash /root/payload/scripts/bake/CopyArtefacts.sh"  
+    Properties:
+      ImageId: "@amazon2-latest"
+      InstanceType: "t3.medium"
+  
+  LoadBalancer:
+    Type: "AWS::ElasticLoadBalancing::LoadBalancer"
+    Properties:
+      Listeners:
+        - LoadBalancerPort: 7070
+          InstancePort: 7070
+          Protocol: "HTTPS"
+          SSLCertificateId: "@wildcard-qcpaws"
+        - LoadBalancerPort: 3000
+          InstancePort: 3000
+          Protocol: "HTTPS"
+          SSLCertificateId: "@wildcard-qcpaws"
+        - LoadBalancerPort: 3001
+          InstancePort: 3001
+          Protocol: "HTTPS"    
+          SSLCertificateId: "@wildcard-qcpaws"
+      HealthCheck:
+        HealthyThreshold: "2"
+        Interval: "10"
+        Target: "HTTP:3000/MEL"
+        Timeout: "5"
+        UnhealthyThreshold: "2"
+  
+  AutoScalingGroup:
+    Type: "AWS::AutoScaling::AutoScalingGroup"
+    Properties:
+      MinSize: 1
+      MaxSize: 1 
+      HealthCheckGracePeriod: 600
+   
+  LaunchConfiguration:
+    Type: "AWS::AutoScaling::LaunchConfiguration"
+    Metadata:
+      AWS::CloudFormation::Init:
+        configSets:
+          Deploy: [ "Bootstrap" ]
+        Bootstrap:
+          commands:
+            01-SetupBackend:
+              command: "bash /opt/deployment_home/scripts/launch/SetupBackend.sh"
+            02-SetupLMOFrontEnd:
+              command: "bash /opt/deployment_home/scripts/launch/SetupLMOFrontEnd.sh"
+            03-SetupWorkloadFrontEnd:
+              command: "bash /opt/deployment_home/scripts/launch/SetupWorkloadFrontEnd.sh"  
+            04-SetupSplunk:
+              command: "bash opt/deployment_home/scripts/launch/SetupSplunk.sh"
+    Properties:
+      InstanceType: "t3.medium"
+      
+Actions:
+  PostDeploy:
+    - Action: QualysWAS
+      Stage: "01"
+      Parameters:
+        ScanConf: 
+          qualys_was:
+            host: "@LoadBalancer.DNSName:3000"
+            scanner: internal
+            recipients: ["goutham.r@qantas.com.au","qantasmaintenixandtraxsupport@qantas.onmicrosoft.com"]
+    - Action: QualysWAS
+      Stage: "02"
+      Parameters:
+        ScanConf:
+          qualys_was:
+            host: "@LoadBalancer.DNSName:3001"
+            scanner: internal
+            recipients: ["goutham.r@qantas.com.au","qantasmaintenixandtraxsupport@qantas.onmicrosoft.com"]        
+             

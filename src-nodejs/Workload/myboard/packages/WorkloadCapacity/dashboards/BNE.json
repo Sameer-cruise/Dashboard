@@ -1,0 +1,49 @@
+{
+  "title": "BNE WorkLoad Dashboard",
+  "titleVisible": false,
+  "description": "Capacity Dashboard for Brisbane",
+  "layout": {
+    "customJS": [
+      "jquery.peity.js",
+      "Chart.min.js",
+      "moment.js",
+      "moment-timezone-with-data.min.js"
+    ],
+    "widgets": [
+      {
+        "row": 1,
+        "col": 1,
+        "width": 3,
+        "height": 4,
+        "widget": "BNE",
+        "job": "ADL",
+        "config": "job_BNE"
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "width": 3,
+        "height": 4,
+        "widget": "DETAILS",
+        "job": "DETAILS",
+        "config": "job_DET"
+      }
+    ]
+  },
+  "config": {
+    "job_BNE": {
+      "interval": 60000,
+      "widgetTitle": "Maintenix Dashboard",
+      "location": "BNE",
+      "locationName": "Brisbane",
+      "restURL": "http://localhost:7070/Dashboard/LMODashboard/GraphAustralian?loc=",
+      "TZ": "AUSTRALIA/BRISBANE"
+    },
+    "job_DET": {
+      "interval": 60000,
+      "locationWP": "BNE",
+      "restWPURL": "http://localhost:7070/Dashboard/LMODashboard/GraphDrill?loc=",
+      "TZWP": "AUSTRALIA/BRISBANE"
+    }
+  }
+}

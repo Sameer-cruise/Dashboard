@@ -1,0 +1,22 @@
+{
+  "config" : {
+
+    "job" : {
+        "interval" : 60000,
+        "widgetTitle" : "Maintenix Dashboard",
+		"restURL":"http://localhost:7070/Dashboard/LMODashboard/Locations?loc=",
+		"timeURL":"http://localhost:7070/Dashboard/LMODashboard/Timings",
+		"restWPURL":"http://localhost:7070/Dashboard/LMODashboard/wpData?loc=",
+		"restAPUURL":"https://apualerting-np.qantas.com.au/api/v0/transits/"
+      },
+	  "job_WP" : {
+		"restWPURL":"http://localhost:7070/Dashboard/LMODashboard/wpData?loc=",
+		"widgetTitleWP":"Workpackage Dashboard"
+      },
+	   "job_APU" : {
+		"restAPUURL":"http://localhost:7070/Dashboard/apu/",
+		"widgetTitleAPU":"APU Alerting Dashboard"
+      }
+	  
+  }
+}

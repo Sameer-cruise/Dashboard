@@ -1,0 +1,9 @@
+SELECT
+    mxprod.inv_ac_reg.fin_no_cd AS rego
+FROM
+    mxprod.inv_ac_reg
+    JOIN mxprod.acft_cap_levels ON mxprod.inv_ac_reg.inv_no_db_id = mxprod.acft_cap_levels.acft_no_db_id
+                                   AND mxprod.inv_ac_reg.inv_no_id = mxprod.acft_cap_levels.acft_no_id
+WHERE
+    mxprod.acft_cap_levels.cap_cd = 'TECHLOG'
+    AND acft_cap_levels.config_level_cd = 'ELOGBOOK'

@@ -1,0 +1,24 @@
+{
+ "enabled": true,
+
+  "title": "PERTH INT",
+  "description": "Perth International Board",
+  "layout": {
+      "title": false,
+      "customJS" : ["jquery.peity.js","moment.js","moment-timezone-with-data.min.js"],
+      "widgets" : [
+          {"row" : 1, "col" : 1, "width" : 6, "height" : 4, "widget" : "displayjson",    "job" : "displayjsonjob", "config": "job"}
+      ]
+  },
+
+  "config" : {
+
+     "job" : {
+        "interval" : 60000,
+        "widgetTitle" : "Maintenix Dashboard",
+		"location":"PERI",
+		"port":"PERTH INTERNATIONAL",
+		"TZ":"AUSTRALIA/PERTH"
+      }
+  }
+}

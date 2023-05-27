@@ -1,0 +1,11 @@
+GCP:
+----
+
+1. CREATE REPOSITORY :
+TUTORIALDIR=~/src/eateager-sqldb/nodejs_mvms_quickstart-2017-04-27-13-19
+RECOMMENDER_FUNCTIONS=~/src/eateager-recommender
+
+2. CLONE REPOSITORY :
+git clone https://github.com/GoogleCloudPlatform/nodejs-getting-started.git $TUTORIALDIR
+
+

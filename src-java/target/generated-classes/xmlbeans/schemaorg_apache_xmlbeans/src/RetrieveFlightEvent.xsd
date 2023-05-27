@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:aidx="http://www.iata.org/IATA/2007/00"
+           targetNamespace="urn:www.qantas.com:schema:cdm:operations:FlightOperations:RetrieveFlightEvent:v1"
+           xmlns:tns="urn:www.qantas.com:schema:cdm:operations:FlightOperations:RetrieveFlightEvent:v1"
+           xmlns:leg="urn:www.qantas.com:schema:cdm:operations:FlightOperations:RetrieveFlightLeg:v1"
+           elementFormDefault="qualified">
+
+ <xs:import namespace="http://www.iata.org/IATA/2007/00"
+            schemaLocation="../../../common/Common/v1/IATA_AIDX_CommonTypes.xsd"/>
+            <xs:import namespace="urn:www.qantas.com:schema:cdm:operations:FlightOperations:RetrieveFlightLeg:v1"
+            schemaLocation="RetrieveFlightLeg.xsd"/>
+            
+ <xs:complexType name="RetriveFlightEventType">
+  <xs:annotation>
+   <xs:documentation>Used to retrieve flight leg info</xs:documentation>
+  </xs:annotation>
+   <xs:complexContent>
+    <xs:extension base="leg:RetrieveFlightLegType">
+        <xs:sequence>
+            <xs:element name="DepartureLegEventId" type="xs:integer" minOccurs="0">
+                <xs:annotation>
+                 <xs:documentation>Event Id of departure leg for particular event</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ArrivalLegEventId" type="xs:integer">
+                <xs:annotation>
+                 <xs:documentation>Event Id of arrival leg for particular event</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:extension>
+  </xs:complexContent>      
+</xs:complexType>
+
+ <xs:element name="retriveFlightEventMsgRq" type="tns:RetriveFlightEventType"/>
+ <xs:element name="retriveFlightEventMsgRes" type="aidx:FlightLegType"/>
+</xs:schema>

@@ -1,0 +1,286 @@
+SELECT
+    to_char(wp_start_date_overflow, 'DD-MON-YY') AS datevalue,
+    decode(check_group, 'DAY', 'DAY', 'NIGHT', 'NGT',
+           'A_CHK', 'ACHK') AS checkgroup,
+    decode(assmbl_cd, 'N37', '737', '737', '737',
+           '744', '747', '767F', '767', assmbl_cd) AS assmblcd,
+    loc_cd              AS loccd,
+    TRIM(to_char(wp_start_date_overflow, 'DY')) AS dayofweek,
+    wp_sched_start_dt   AS wpschedstartdate,
+    local_start_dt      AS localstartdate,
+    local_start_time    AS localstarttime,
+    local_end_dt        AS localenddate,
+    local_end_time      AS localendtime,
+    wp_status           AS wpstatus,
+    substr(rego, length(rego) - 2, 3) AS rego,
+    wp_barcode          AS wpbarcode,
+    sched_hr            AS schedhrs,
+    complete_hrs        AS completehrs,
+    0 AS mouhrs,
+    overflow_hrs        AS overflowhrs
+FROM
+    (
+        SELECT
+            check_group,
+            slot,
+            assmbl_cd,
+            rego,
+            loc_cd,
+            CAST(
+                CASE
+                    WHEN overflow_bool = 1 THEN
+                        CASE
+                            WHEN to_char(CAST((from_tz(CAST(sysdate AS TIMESTAMP), 'UTC') AT TIME ZONE timezone_cd) AS DATE), 'HH24:MI:SS'
+                            ) >= '06:00:00' THEN
+                                trunc(to_date(to_char(CAST((from_tz(CAST(sysdate AS TIMESTAMP), 'UTC') AT TIME ZONE timezone_cd) AS
+                                DATE), 'DD-MON-YY')))
+                            ELSE
+                                trunc(to_date(to_char(CAST((from_tz(CAST(sysdate - 1 AS TIMESTAMP), 'UTC') AT TIME ZONE timezone_cd
+                                ) AS DATE), 'DD-MON-YY')))
+                        END
+                    ELSE
+                        trunc(to_date(wp_start_date, 'DD-MON-YY'))
+                END
+            AS DATE) AS wp_start_date_overflow,
+            wp_barcode,
+            wp_sched_start_dt,
+            local_start_dt,
+            local_start_time,
+            wp_start_date,
+            loc_type_cd,
+            timezone_cd,
+            wp_sched_end_dt,
+            local_end_dt,
+            local_end_time,
+            wp_location,
+            wp_status,
+            nvl(sched_hr, 0) AS sched_hr,
+            CASE
+                WHEN overflow_bool = 1 THEN
+                    CASE
+                        WHEN to_char(CAST((from_tz(CAST(sysdate AS TIMESTAMP), 'UTC') AT TIME ZONE timezone_cd) AS DATE), 'HH24:MI:SS'
+                        ) >= '06:00:00' THEN
+                            0
+                        ELSE
+                            CASE
+                                WHEN day_gap <= 1 THEN
+                                    sched_hr
+                                ELSE
+                                    0
+                            END
+                    END
+                ELSE
+                    sched_hr
+            END AS sched_hrs_overflow,
+            nvl(complete_hrs, 0) AS complete_hrs,
+            CASE
+                WHEN overflow_bool = 1 THEN
+                    CASE
+                        WHEN to_char(CAST((from_tz(CAST(sysdate AS TIMESTAMP), 'UTC') AT TIME ZONE timezone_cd) AS DATE), 'HH24:MI:SS'
+                        ) >= '06:00:00' THEN
+                            0
+                        ELSE
+                            CASE
+                                WHEN day_gap <= 1 THEN
+                                    complete_hrs
+                                ELSE
+                                    0
+                            END
+                    END
+                ELSE
+                    complete_hrs
+            END AS complete_hrs_overflow,
+            overflow_bool,
+            CASE
+                WHEN overflow_bool = 1 THEN
+                    CASE
+                        WHEN ( to_char(CAST((from_tz(CAST(sysdate AS TIMESTAMP), 'UTC') AT TIME ZONE timezone_cd) AS DATE), 'HH24:MI:SS'
+                        ) >= '06:00:00'
+                               OR day_gap > 1 ) THEN
+                            sched_hr
+                        ELSE
+                            0
+                    END
+                ELSE
+                    0
+            END AS overflow_hrs
+        FROM
+            (
+                SELECT DISTINCT
+                    wp_inv_loc.loc_cd          AS loc_cd,
+                    wp_inv_inv.assmbl_cd       AS assmbl_cd,
+                    (
+                        SELECT
+                            ac_reg_cd
+                        FROM
+                            mxprod.inv_ac_reg
+                        WHERE
+                            inv_no_db_id = wp_inv_inv.inv_no_db_id
+                            AND inv_no_id = wp_inv_inv.inv_no_id
+                    ) AS rego,
+                    wp_task.barcode_sdesc      AS wp_barcode,
+                    wp_event.sched_start_dt    AS wp_sched_start_dt,
+                    to_char(CAST((from_tz(CAST(wp_event.sched_start_dt AS TIMESTAMP), 'UTC') AT TIME ZONE wp_inv_loc.timezone_cd)
+                    AS DATE), 'DD-MON') AS local_start_dt,
+                    to_char(CAST((from_tz(CAST(wp_event.sched_start_dt AS TIMESTAMP), 'UTC') AT TIME ZONE wp_inv_loc.timezone_cd)
+                    AS DATE), 'HH24:MI:SS') AS local_start_time,
+                    wp_inv_loc.loc_type_cd,
+                    wp_inv_loc.timezone_cd     AS timezone_cd,
+                    to_char(CAST((from_tz(CAST(sched_start_dt AS TIMESTAMP), 'UTC') AT TIME ZONE wp_inv_loc.timezone_cd) AS DATE)
+                    , 'DD-MON-YY') AS wp_start_date,
+                    wp_event.sched_end_dt      AS wp_sched_end_dt,
+                    to_char(CAST((from_tz(CAST(wp_event.sched_end_dt AS TIMESTAMP), 'UTC') AT TIME ZONE wp_inv_loc.timezone_cd) AS
+                    DATE), 'DD-MON') AS local_end_dt,
+                    to_char(CAST((from_tz(CAST(wp_event.sched_end_dt AS TIMESTAMP), 'UTC') AT TIME ZONE wp_inv_loc.timezone_cd) AS
+                    DATE), 'HH24:MI:SS') AS local_end_time,
+                    wp_inv_loc.loc_cd          AS wp_location,
+                    wp_event.event_status_cd   AS wp_status,
+                    (
+                        SELECT
+                            nvl(SUM(slr.sched_hr), 0)
+                        FROM
+                            mxprod.sched_labour        sl,
+                            mxprod.sched_labour_role   slr,
+                            mxprod.evt_event           task_event,
+                            mxprod.sched_stask         ss
+                        WHERE
+                            task_event.h_event_db_id = wp_event.event_db_id
+                            AND task_event.h_event_id = wp_event.event_id
+                            AND sl.sched_db_id = task_event.event_db_id
+                            AND sl.sched_id = task_event.event_id
+                            AND slr.labour_db_id = sl.labour_db_id
+                            AND slr.labour_id = sl.labour_id
+                            AND task_event.hist_bool = 0
+                            AND nvl(slr.actual_end_dt, wp_event.sched_start_dt) >= wp_event.sched_start_dt
+                            AND sl.labour_skill_cd IN (
+                                'AVIONICS',
+                                'ELECT',
+                                'MECH',
+                                'PPLANT',
+                                'STRUCT',
+                                'CABIN',
+                                'BORO'
+                            )
+                            AND ss.sched_db_id = task_event.event_db_id
+                            AND ss.sched_id = task_event.event_id
+                            AND ss.dup_jic_sched_id IS NULL
+                        GROUP BY
+                            task_event.h_event_db_id,
+                            task_event.h_event_id
+                    ) AS sched_hr,
+                    (
+                        SELECT
+                            nvl(SUM(slr.sched_hr), 0)
+                        FROM
+                            mxprod.sched_labour        sl,
+                            mxprod.sched_labour_role   slr,
+                            mxprod.evt_event           task_event,
+                            mxprod.sched_stask         ss
+                        WHERE
+                            task_event.h_event_db_id = wp_event.event_db_id
+                            AND task_event.h_event_id = wp_event.event_id
+                            AND sl.sched_db_id = task_event.event_db_id
+                            AND sl.sched_id = task_event.event_id
+                            AND slr.labour_db_id = sl.labour_db_id
+                            AND slr.labour_id = sl.labour_id
+                            AND task_event.event_status_cd = 'COMPLETE'
+                            AND nvl(slr.actual_end_dt, wp_event.sched_start_dt) >= wp_event.sched_start_dt
+                            AND ss.sched_db_id = task_event.event_db_id
+                            AND ss.sched_id = task_event.event_id
+                            AND ss.dup_jic_sched_id IS NULL
+                            AND sl.labour_skill_cd IN (
+                                'AVIONICS',
+                                'ELECT',
+                                'MECH',
+                                'PPLANT',
+                                'STRUCT',
+                                'CABIN',
+                                'BORO'
+                            )
+                        GROUP BY
+                            task_event.h_event_db_id,
+                            task_event.h_event_id
+                    ) AS complete_hrs,
+                    CASE
+                        WHEN to_date(to_char(CAST((from_tz(CAST(sched_start_dt AS TIMESTAMP), 'UTC') AT TIME ZONE wp_inv_loc.timezone_cd
+                        ) AS DATE), 'DD-MON-YY'), 'DD-MON-YY') < to_date(to_char(CAST((from_tz(CAST(sysdate AS TIMESTAMP), 'UTC')
+                        AT TIME ZONE wp_inv_loc.timezone_cd) AS DATE), 'DD-MON-YY'), 'DD-MON-YY') THEN
+                            1
+                        ELSE
+                            0
+                    END AS overflow_bool,
+                    to_date(to_char(CAST((from_tz(CAST(sysdate AS TIMESTAMP), 'UTC') AT TIME ZONE wp_inv_loc.timezone_cd) AS DATE
+                    ), 'DD-MON-YY'), 'DD-MON-YY') - to_date(to_char(CAST((from_tz(CAST(sched_start_dt AS TIMESTAMP), 'UTC') AT TIME
+                    ZONE wp_inv_loc.timezone_cd) AS DATE), 'DD-MON-YY'), 'DD-MON-YY') AS day_gap,
+                    CASE
+                        WHEN wp_task.task_subclass_cd = 'A/PHASE' THEN
+                            'A_CHK'
+                        ELSE
+                            CASE
+                                WHEN ( to_char(CAST((from_tz(CAST(sched_start_dt AS TIMESTAMP), 'UTC') AT TIME ZONE wp_inv_loc.timezone_cd
+                                ) AS DATE), 'HH24:MI:SS') >= '05:00:00'
+                                       AND to_char(CAST((from_tz(CAST(sched_start_dt AS TIMESTAMP), 'UTC') AT TIME ZONE wp_inv_loc
+                                       .timezone_cd) AS DATE), 'HH24:MI:SS') < '18:00:00' ) THEN
+                                    'DAY'
+                                WHEN ( to_char(CAST((from_tz(CAST(sched_start_dt AS TIMESTAMP), 'UTC') AT TIME ZONE wp_inv_loc.timezone_cd
+                                ) AS DATE), 'HH24:MI:SS') >= '18:00:00' ) THEN
+                                    'NIGHT'
+                                ELSE
+                                    'NIGHT'
+                            END
+                    END AS check_group,
+                    CASE
+                        WHEN ( to_char(CAST((from_tz(CAST(sched_start_dt AS TIMESTAMP), 'UTC') AT TIME ZONE wp_inv_loc.timezone_cd
+                        ) AS DATE), 'HH24:MI:SS') >= '05:00:00'
+                               AND to_char(CAST((from_tz(CAST(sched_start_dt AS TIMESTAMP), 'UTC') AT TIME ZONE wp_inv_loc.timezone_cd
+                               ) AS DATE), 'HH24:MI:SS') < '18:00:00' ) THEN
+                            'DAY'
+                        WHEN ( to_char(CAST((from_tz(CAST(sched_start_dt AS TIMESTAMP), 'UTC') AT TIME ZONE wp_inv_loc.timezone_cd
+                        ) AS DATE), 'HH24:MI:SS') >= '18:00:00' ) THEN
+                            'NIGHT'
+                        ELSE
+                            'NIGHT'
+                    END AS slot
+                FROM
+                    mxprod.sched_wo_line   swl,
+                    mxprod.sched_stask     wp_task,
+                    mxprod.evt_event       wp_event,
+                    mxprod.evt_loc         wp_loc,
+                    mxprod.inv_loc         wp_inv_loc,
+                    mxprod.inv_inv         wp_inv_inv
+                WHERE
+                    swl.wo_sched_db_id = wp_task.sched_db_id
+                    AND swl.wo_sched_id = wp_task.sched_id
+                    AND wp_task.sched_db_id = wp_event.event_db_id
+                    AND wp_task.sched_id = wp_event.event_id
+                    AND wp_loc.event_db_id = wp_event.event_db_id
+                    AND wp_loc.event_id = wp_event.event_id
+                    AND wp_inv_loc.loc_db_id = wp_loc.loc_db_id
+                    AND wp_inv_loc.loc_id = wp_loc.loc_id
+                    AND wp_inv_loc.loc_type_cd = 'LINE'
+                    AND wp_inv_inv.inv_no_db_id = wp_task.main_inv_no_db_id
+                    AND wp_inv_inv.inv_no_id = wp_task.main_inv_no_id
+                    AND wp_inv_loc.loc_cd IN (
+                        'SYD/LINE'
+                    )
+                    AND wp_task.task_class_cd IN (
+                        'CHECK'
+                    )
+                    AND ( to_date(to_char(CAST((from_tz(CAST(sched_start_dt AS TIMESTAMP), 'UTC') AT TIME ZONE wp_inv_loc.timezone_cd
+                    ) AS DATE), 'DD/MON/YY HH24:MI:SS'), 'DD/MON/YY HH24:MI:SS') BETWEEN to_date(to_char(trunc(CAST((from_tz(CAST
+                    (sysdate - 1 AS TIMESTAMP), 'UTC') AT TIME ZONE wp_inv_loc.timezone_cd) AS DATE)), 'DD/MON/YY HH24:MI:SS'), 'DD/MON/YY HH24:MI:SS'
+                    ) AND to_date(to_char(trunc(CAST((from_tz(CAST(sysdate + 7 AS TIMESTAMP), 'UTC') AT TIME ZONE wp_inv_loc.timezone_cd
+                    ) AS DATE)), 'DD/MON/YY HH24:MI:SS'), 'DD/MON/YY HH24:MI:SS') )
+                    AND wp_event.event_status_cd IN (
+                        'IN WORK',
+                        'COMPLETE',
+                        'COMMIT'
+                    )
+            )
+        WHERE
+
+            (overflow_bool = 0) AND (sched_hr != '0' OR complete_hrs != '0' )
+    )
+ORDER BY
+    wpschedstartdate,
+    checkgroup

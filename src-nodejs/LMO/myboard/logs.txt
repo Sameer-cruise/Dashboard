@@ -1,0 +1,46 @@
+
+Starting server...
+Installing dependencies...
+done!
+
+-------------------------------------------
+Atlasboard listening at port 3000
+-------------------------------------------
+
+2016-06-24T02:56:04+1000 <warn> global-auth.js:16 (module.exports) Authentication file not found in globalAuth.json. You may want to create your own. You can also define the place where the credential file will be located  by editing the auth file configuration property 'authenticationFilePath'
+http://localhost:5000/Dashboard/LMODashboard/Locations?loc=ADL
+Wait for the board to start.
+[dashboard: ADL] [job: displayjsonjob] 2016-06-24T02:56:06+1000 <log> scheduler.js:74 (handleSuccess) executed OK
+http://localhost:5000/Dashboard/LMODashboard/Locations?loc=ASP
+Wait for the board to start.
+[dashboard: ASP] [job: displayjsonjob] 2016-06-24T02:56:07+1000 <log> scheduler.js:74 (handleSuccess) executed OK
+http://localhost:5000/Dashboard/LMODashboard/Locations?loc=BNE
+Wait for the board to start.
+[dashboard: BNE] [job: displayjsonjob] 2016-06-24T02:56:09+1000 <log> scheduler.js:74 (handleSuccess) executed OK
+http://localhost:5000/Dashboard/LMODashboard/Locations?loc=CBR
+Wait for the board to start.
+[dashboard: CBR] [job: displayjsonjob] 2016-06-24T02:56:10+1000 <log> scheduler.js:74 (handleSuccess) executed OK
+http://localhost:5000/Dashboard/LMODashboard/Locations?loc=CNS
+Wait for the board to start.
+[dashboard: CNS] [job: displayjsonjob] 2016-06-24T02:56:12+1000 <log> scheduler.js:74 (handleSuccess) executed OK
+http://localhost:5000/Dashboard/LMODashboard/Locations?loc=DRW
+Wait for the board to start.
+[dashboard: DRW] [job: displayjsonjob] 2016-06-24T02:56:13+1000 <log> scheduler.js:74 (handleSuccess) executed OK
+http://localhost:5000/Dashboard/LMODashboard/Locations?loc=LAX
+Wait for the board to start.
+[dashboard: LAX] [job: displayjsonjob] 2016-06-24T02:56:15+1000 <log> scheduler.js:74 (handleSuccess) executed OK
+http://localhost:5000/Dashboard/LMODashboard/Locations?loc=MEL
+Wait for the board to start.
+[dashboard: MEL] [job: displayjsonjob] 2016-06-24T02:56:16+1000 <log> scheduler.js:74 (handleSuccess) executed OK
+http://localhost:5000/Dashboard/LMODashboard/Locations?loc=PER
+Wait for the board to start.
+[dashboard: PER] [job: displayjsonjob] 2016-06-24T02:56:18+1000 <log> scheduler.js:74 (handleSuccess) executed OK
+http://localhost:5000/Dashboard/LMODashboard/Locations?loc=SYD
+Wait for the board to start.
+[dashboard: SYD] [job: displayjsonjob] 2016-06-24T02:56:19+1000 <log> scheduler.js:74 (handleSuccess) executed OK
+http://localhost:5000/Dashboard/LMODashboard/Locations?loc=SYDI
+Wait for the board to start.
+[dashboard: SYD_INT] [job: displayjsonjob] 2016-06-24T02:56:21+1000 <log> scheduler.js:74 (handleSuccess) executed OK
+http://localhost:5000/Dashboard/LMODashboard/Locations?loc=TSV
+Wait for the board to start.
+[dashboard: TSV] [job: displayjsonjob] 2016-06-24T02:56:22+1000 <log> scheduler.js:74 (handleSuccess) executed OK

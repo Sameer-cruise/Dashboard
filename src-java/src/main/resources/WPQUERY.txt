@@ -1,0 +1,242 @@
+SELECT
+    c.rego AS rego,
+    nvl(c.wp, 'EMPTY') AS wp,
+    nvl(c.wp_loc, 'EMPTY') AS wp_loc,
+    nvl(c.status, 'EMPTY') AS status,
+    nvl(to_char(c.wp_start, 'DD-MM-YY HH24:MI:SS'), '01-01-01 00:00:00') AS wp_start,
+    nvl(to_char(c.wp_end, 'DD-MM-YY HH24:MI:SS'), '01-01-01 00:00:00') AS wp_end,
+    nvl(c.loc, 'EMPTY') AS loc,
+    nvl(c.mel_cnt, 'NA') AS mel_cnt,
+    nvl(c.due_date, 'NA') AS due_date,
+    nvl(c.local_wp_start, '01-JAN-01 00:00:00') AS local_wp_start,
+    nvl(c.mx_flight, 'EMPTY') AS mx_flight,
+    nvl(c.indicate, 'EMPTY') AS indicate,
+    (
+        CASE
+            WHEN c.rego IN (
+                SELECT
+                    mxprod.inv_ac_reg.fin_no_cd
+                FROM
+                    mxprod.inv_ac_reg
+                    JOIN mxprod.acft_cap_levels ON mxprod.inv_ac_reg.inv_no_db_id = mxprod.acft_cap_levels.acft_no_db_id
+                                                   AND mxprod.inv_ac_reg.inv_no_id = mxprod.acft_cap_levels.acft_no_id
+                WHERE
+                    mxprod.acft_cap_levels.cap_cd = 'TECHLOG'
+                    AND mxprod.acft_cap_levels.config_level_cd = 'ELOGBOOK'
+            ) THEN
+                1
+            ELSE
+                0
+        END
+    ) AS elog_cap
+FROM
+    (
+        SELECT
+            b.reg_cd     AS rego,
+            nvl(a.wp, 'EMPTY') AS wp,
+            nvl(a.wp_loc, 'EMPTY') AS wp_loc,
+            nvl(a.status, 'EMPTY') AS status,
+            a.wp_start   AS wp_start,
+            a.wp_end     AS wp_end,
+            nvl(a.loc, 'EMPTY') AS loc,
+            nvl(b.mel_count, 'NA') AS mel_cnt,
+            nvl(b.tasks_faults_due, 'NA') AS due_date,
+            nvl(a.local_start_dt, '01-JAN-01 00:00:00') AS local_wp_start,
+            nvl(a.mx_flight, 'EMPTY') AS mx_flight,
+            CASE
+                WHEN ( to_number(substr(a.flight, 4)) >= 1
+                       AND to_number(substr(a.flight, 4)) < 0399 )
+                     OR ( to_number(substr(a.flight, 4)) >= 1601 ) THEN
+                    'I'
+                ELSE
+                    'D'
+            END AS indicate
+        FROM
+            (
+                SELECT
+                    ss.main_inv_no_db_id,
+                    ss.main_inv_no_id,
+                    ss.barcode_sdesc     AS wp,
+                    il.loc_cd            AS wp_loc,
+                    ee.event_status_cd   AS status,
+          -- TO_CHAR(ee.SCHED_START_DT,'DD-MM-YY HH24:MI:SS')                                                                                 AS WP_START,
+          -- TO_CHAR(ee.SCHED_END_DT,'DD-MM-YY HH24:MI:SS')                                                                                   AS WP_END,
+                    ee.sched_start_dt    AS wp_start,
+                    ee.sched_end_dt      AS wp_end,
+                    sil.loc_cd           AS loc,
+                    to_char(CAST((from_tz(CAST(ee.sched_start_dt AS TIMESTAMP), 'UTC') AT TIME ZONE sil.timezone_cd) AS DATE), 'DD/MON/YY hh24:mi:ss'
+                    ) AS local_start_dt,
+                    CASE
+                        WHEN sil.loc_cd = 'SYD'
+                             AND ss.barcode_sdesc IS NOT NULL THEN
+                            (
+                                SELECT DISTINCT
+                                    FIRST_VALUE(fl.master_flight_no) OVER(
+                                        PARTITION BY fl.aircraft_db_id, fl.aircraft_id
+                                        ORDER BY
+                                            fl.sched_departure_dt
+                                    )
+                                FROM
+                                    mxprod.fl_leg fl
+                                WHERE
+                                    fl.sched_departure_dt >= ee.sched_end_dt
+                                    AND fl.aircraft_db_id = ss.main_inv_no_db_id
+                                    AND fl.aircraft_id = ss.main_inv_no_id
+                                    AND fl.hist_bool = 0
+                            )
+                    END AS flight,
+                    CASE
+                        WHEN ss.barcode_sdesc IS NOT NULL THEN
+                            (
+                                SELECT DISTINCT
+                                    FIRST_VALUE(fl.master_flight_no) OVER(
+                                        PARTITION BY fl.aircraft_db_id, fl.aircraft_id, fl.arrival_loc_db_id, fl.arrival_loc_id
+                                        ORDER BY
+                                            fl.sched_arrival_dt DESC
+                                    )
+                                FROM
+                                    mxprod.fl_leg fl
+                                WHERE
+                                    fl.sched_arrival_dt < ee.sched_end_dt
+                                    AND fl.aircraft_db_id = ss.main_inv_no_db_id
+                                    AND fl.aircraft_id = ss.main_inv_no_id
+                                    AND fl.arrival_loc_db_id = sil.loc_db_id
+                                    AND fl.arrival_loc_id = sil.loc_id
+                                    AND fl.flight_leg_status_cd NOT IN (
+                                        'MXCANCEL',
+                                        'MXERR',
+                                        'MXBLKOUT'
+                                    )
+                --   AND fl.HIST_BOOL          =1
+                            )
+                    END AS mx_flight
+                FROM
+                    mxprod.sched_stask   ss,
+                    mxprod.evt_event     ee,
+                    mxprod.evt_loc       el,
+                    mxprod.inv_loc       il,
+                    mxprod.inv_loc       sil
+                WHERE
+                    ss.sched_db_id = ee.event_db_id
+                    AND ss.sched_id = ee.event_id
+                    AND ee.event_db_id = el.event_db_id
+                    AND ee.event_id = el.event_id
+                    AND el.loc_db_id = il.loc_db_id
+                    AND el.loc_id = il.loc_id
+                    AND ee.hist_bool = 0
+                    AND ss.task_class_cd = 'CHECK'
+                    AND nvl(ss.task_subclass_cd, 'NA') NOT IN (
+                        'TECH',
+                        'CABIN'
+                    )
+                    AND ( ( ee.event_status_cd IN (
+                        'ACTV',
+                        'COMMIT'
+                    )
+                            AND trunc(ee.sched_start_dt) BETWEEN trunc(sysdate) - 1 AND trunc(sysdate) + 1 )
+                          OR ( ee.event_status_cd = 'IN WORK' ) )
+                    AND il.supply_loc_db_id = sil.loc_db_id
+                    AND il.supply_loc_id = sil.loc_id
+                    AND sil.loc_type_cd = 'AIRPORT'
+                    AND sil.loc_cd IN (
+                        'SYD',
+                        'MEL',
+                        'BNE',
+                        'PER',
+                        'ADL',
+                        'ASP',
+                        'DRW',
+                        'TSV',
+                        'CNS',
+                        'CBR',
+                        'LAX',
+                        'AKL',
+                        'WLG',
+                        'CHC',
+                        'ZQN',
+                        'SIN'
+                    )
+          --AND sil.loc_cd        IN('MEL')
+            ) a,
+            (
+                SELECT
+                    substr(ia.ac_reg_cd, 4) AS reg_cd,
+                    ia.inv_no_db_id,
+                    ia.inv_no_id,
+                    (
+                        SELECT
+                            decode(COUNT(DISTINCT ss.barcode_sdesc), 0, '', COUNT(DISTINCT ss.barcode_sdesc))
+                        FROM
+                            mxprod.sched_stask   ss,
+                            mxprod.inv_inv       ii,
+                            mxprod.inv_ac_reg    act,
+                            mxprod.sd_fault      sd
+                        WHERE
+                            ss.main_inv_no_db_id = ii.inv_no_db_id
+                            AND ss.main_inv_no_id = ii.inv_no_id
+                            AND ii.h_inv_no_db_id = act.inv_no_db_id
+                            AND ii.h_inv_no_id = act.inv_no_id
+                            AND ss.fault_db_id = sd.fault_db_id
+                            AND ss.fault_id = sd.fault_id
+                            AND ss.hist_bool_ro = 0
+                            AND sd.fail_sev_cd = 'MEL'
+                            AND act.inv_no_db_id = ia.inv_no_db_id
+                            AND act.inv_no_id = ia.inv_no_id
+                    ) AS mel_count,
+                    (
+                        SELECT DISTINCT
+                            FIRST_VALUE(ss.barcode_sdesc
+                                        || ','
+                                        || to_char(ed.sched_dead_dt, 'DD-MM-YY HH24:MI:SS')
+                                        || ','
+                                        || nvl((
+                                SELECT DISTINCT
+                                    barcode_sdesc
+                                FROM
+                                    mxprod.sched_stask
+                                WHERE
+                                    task_class_cd = 'CHECK'
+                                    AND sched_db_id = ee.h_event_db_id
+                                    AND sched_id = ee.h_event_id
+                            ), 'NOWP')) OVER(
+                                PARTITION BY act.inv_no_db_id, act.inv_no_id
+                                ORDER BY
+                                    ed.sched_dead_dt
+                            )
+                        FROM
+                            mxprod.sched_stask      ss,
+                            mxprod.inv_inv          ii,
+                            mxprod.inv_ac_reg       act,
+                            mxprod.evt_sched_dead   ed,
+                            mxprod.evt_event        ee
+                        WHERE
+                            ss.hist_bool_ro = 0
+                            AND ss.soft_deadline_bool = 0
+                            AND ss.main_inv_no_db_id = ii.inv_no_db_id
+                            AND ss.main_inv_no_id = ii.inv_no_id
+                            AND ss.sched_db_id = ed.event_db_id
+                            AND ss.sched_id = ed.event_id
+                            AND trunc(ed.sched_dead_dt) BETWEEN trunc(sysdate) - 1 AND trunc(sysdate) + 1
+                            AND ii.h_inv_no_db_id = act.inv_no_db_id
+                            AND ii.h_inv_no_id = act.inv_no_id
+                            AND act.inv_no_db_id = ia.inv_no_db_id
+                            AND act.inv_no_id = ia.inv_no_id
+                            AND ss.sched_db_id = ee.event_db_id
+                            AND ss.sched_id = ee.event_id
+                    ) AS tasks_faults_due
+                FROM
+                    mxprod.inv_ac_reg   ia,
+                    mxprod.inv_inv      ii
+                WHERE
+                    ia.inv_no_db_id = ii.inv_no_db_id
+                    AND ia.inv_no_id = ii.inv_no_id
+                    AND ii.inv_cond_cd != 'ARCHIVE'
+                    AND ( ( ia.ac_reg_cd LIKE 'VH-%' )
+                          OR ( ia.ac_reg_cd LIKE 'ZK-%' ) )
+            ) b
+        WHERE
+            b.inv_no_db_id = a.main_inv_no_db_id (+)
+            AND b.inv_no_id = a.main_inv_no_id (+)
+        ORDER BY
+            5 NULLS FIRST
+    ) c

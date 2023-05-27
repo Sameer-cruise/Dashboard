@@ -1,0 +1,48 @@
+{
+  "title": "HKG WorkLoad Dashboard",
+  "titleVisible": false,
+  "description": "Capacity Dashboard for Hong Kong",
+  "layout": {
+    "customJS": [
+      "jquery.peity.js",
+      "Chart.min.js",
+      "moment.js",
+      "moment-timezone-with-data.min.js"
+    ],
+    "widgets": [
+      {
+        "row": 1,
+        "col": 1,
+        "width": 3,
+        "height": 4,
+        "widget": "HKG",
+        "job": "HKG",
+        "config": "job_HKG"
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "width": 3,
+        "height": 4,
+        "widget": "DETAILS",
+        "job": "DETAILS",
+        "config": "job_DET"
+      }
+    ]
+  },
+  "config": {
+    "job_HKG": {
+      "interval": 60000,
+      "widgetTitle": "Maintenix Dashboard",
+      "location": "HKG",
+      "restURL": "http://localhost:7070/Dashboard/LMODashboard/Graph?loc=",
+      "TZ": "Asia/Hong_Kong"
+    },
+    "job_DET": {
+      "interval": 60000,
+      "locationWP": "HKG",
+      "restWPURL": "http://localhost:7070/Dashboard/LMODashboard/GraphDrill?loc=",
+      "TZWP": "Asia/Hong_Kong"
+    }
+  }
+}

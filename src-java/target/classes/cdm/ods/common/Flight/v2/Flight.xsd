@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 rel. 2 sp2 (http://www.altova.com) by TCS (Qantas Airways Ltd) -->
+<xsd:schema xmlns:tns="urn:www.qantas.com:schema:cdm:flightnetwork:Flight:v2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:airport="urn:www.qantas.com:schema:cdm:flightnetwork:Airport:v1" xmlns:airline="urn:www.qantas.com:schema:cdm:flightnetwork:Airline:v1" xmlns:cabin="urn:www.qantas.com:schema:cdm:reservation:Cabin:v1" xmlns:common="urn:www.qantas.com:schema:cdm:common:Common:v1" xmlns:meal="urn:www.qantas.com:schema:cdm:flightnetwork:Meal:v1" xmlns:fsn="urn:www.qantas.com:schema:cdm:flightnetwork:FlightStatusNotification:v1" xmlns:pnr="urn:www.qantas.com:schema:cdm:reservation:PassengerNameRecord:v1" targetNamespace="urn:www.qantas.com:schema:cdm:flightnetwork:Flight:v2" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="urn:www.qantas.com:schema:cdm:common:Common:v1" schemaLocation="../../Common/v1/Common.xsd"/>
+	<xsd:import namespace="urn:www.qantas.com:schema:cdm:flightnetwork:Airline:v1" schemaLocation="../../Airline/v1/Airline.xsd"/>
+	<xsd:import namespace="urn:www.qantas.com:schema:cdm:flightnetwork:Airport:v1" schemaLocation="../../Airport/v1/Airport.xsd"/>
+	<xsd:simpleType name="ActionCodeType">
+		<xsd:annotation>
+			<xsd:documentation>Identifies for HK codes if the sell is confirmed (sold in carrier system). Values are:
+K - confirmed
+U - unknown</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="TicketlessIndicatorType">
+		<xsd:annotation>
+			<xsd:documentation>Fare can be purchased without issuing a ticket.  Values are:
+Y = Ticketless purchase possible
+N = Ticketless purchase not possible
+Example: Y</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="ElectronicTicketingIndicatorType">
+		<xsd:annotation>
+			<xsd:documentation>Electronic ticketing indicator.  Values are:
+Y = eticket can be issued
+N = no eticket possible
+Example: Y</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="InstantPurchaseIndicatorType">
+		<xsd:annotation>
+			<xsd:documentation>Instant Purchase indicator.  Values are:
+CC = Purchase is immediately charged to CC
+AP = Purchase is using AirPass credit(s)
+PP = Purchase is charged via PayPal (future use)
+N = not an instant purchase (default)
+
+Example: CC</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="ClassOfServiceType">
+		<xsd:annotation>
+			<xsd:documentation> Basic definition of air  ClassOfService. Alpha-coded. Usually single char.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="ChangeOfGuageIndicatorType">
+		<xsd:annotation>
+			<xsd:documentation>ChangeOfGauge indicator. 
+If set to "Y" there has to also be a "NewEquipment" node.
+
+Example: Y = Yes, N = No (default)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="GroundTimeType">
+		<xsd:annotation>
+			<xsd:documentation>The ground time between arrival and departure in a 'Stop' or 'ChangeOfGauge' airport.
+Example: 1:30</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="common:TimeType"/>
+	</xsd:simpleType>
+	<xsd:complexType name="StopType">
+		<xsd:annotation>
+			<xsd:documentation>Each Stop element represents information about a single intermediate stop point on the way from origin to the destination.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="arrivingInfo" type="airport:FlightGroupType">
+				<xsd:annotation>
+					<xsd:documentation>This section describes the inbound flight information into this intermediate point.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="departingInfo" type="airport:FlightGroupType">
+				<xsd:annotation>
+					<xsd:documentation>This section describes the outbound flight from this intermediate point onward.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="newEquipment" type="tns:EquipmentType">
+				<xsd:annotation>
+					<xsd:documentation>Equipment information for onward flight in case of an equipment change at this stop (Change of Gauge).  This will only be present if ChangeOfGauge attribute is set to "Y".</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="groundTime" type="tns:GroundTimeType">
+				<xsd:annotation>
+					<xsd:documentation>The ground time between arrival and departure in a 'Stop' or 'ChangeOfGauge' airport.
+Example: 1:30</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="changeOfGuageIndicator" type="tns:ChangeOfGuageIndicatorType">
+			<xsd:annotation>
+				<xsd:documentation>ChangeOfGauge indicator. 
+If set to "Y" there has to also be a "NewEquipment" node.
+
+Example: Y = Yes, N = No (default)</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:simpleType name="NumberOfStopsType">
+		<xsd:annotation>
+			<xsd:documentation>Number of stops.  Example: 0</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:integer"/>
+	</xsd:simpleType>
+	<xsd:complexType name="FlightReferenceType">
+		<xsd:annotation>
+			<xsd:documentation>Flight/Segment refence type</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="marketingCarrier" type="tns:CarrierType">
+				<xsd:annotation>
+					<xsd:documentation>Flight marketing carrier group</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="operatingCarrier" type="tns:CarrierType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Flight carrier group</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="departure" type="airport:FlightGroupType">
+				<xsd:annotation>
+					<xsd:documentation>Flight departure group</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="arrival" type="airport:FlightGroupType">
+				<xsd:annotation>
+					<xsd:documentation>Flight arrival group</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="classes" type="tns:ClassesType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="actionCode" type="tns:ActionCodeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Identifies for HK codes if the sell is confirmed (sold in carrier system). Values are:
+K - confirmed
+U - unknown</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="FlownIndicatorType">
+		<xsd:annotation>
+			<xsd:documentation>Segment flown indicator.  Values are:
+Y = Yes
+N = No
+Example: Y</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="OriginDestinationIDType">
+		<xsd:annotation>
+			<xsd:documentation>Specifies a group of flights per origin destination. 
+Example: OD1</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="MarriedSegmentType">
+		<xsd:annotation>
+			<xsd:documentation>Indicates married segment.  Values are: 
+B= beginning of married segments group
+I = intermediate flight segments of married seg
+E = end of married segments group
+Example: B
+</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="MarriedRefType">
+		<xsd:annotation>
+			<xsd:documentation>Identifies to which "married group" the segment belongs (in case of multiple married segment groups)
+
+Example: 1</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="OptionalFlightType">
+		<xsd:annotation>
+			<xsd:documentation>Optional flight type.  This is used to specify passive or open segments.  Values are:
+P = Passive
+O = Open
+S = Service (passive info segment, supported on Worldspan as TVL and Amadeus as service segment).
+
+If type is set to O (Open segment) then departure date/time, arrival date/time and flight number don't have to be set.
+
+Example: P</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="CnxxIndicatorType">
+		<xsd:annotation>
+			<xsd:documentation>Connection indicator.  Example: Y = Yes, N = No</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="CheckInFlagIndicatorType">
+		<xsd:annotation>
+			<xsd:documentation>Values are:
+C = CheckIn qualified
+A = under Airport Ctrl</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="FlightRefKeyType">
+		<xsd:annotation>
+			<xsd:documentation>Unique ID to bind request and response, allows the UI to associate RQ and RS with an arbitrary values</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="SecureFlightType">
+		<xsd:annotation>
+			<xsd:documentation>Indicates if Secure Flight data is required for this flight.  
+Values:
+Y = Secure flight data must be provided
+N = (Default) flight does not require Secure Flight data</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="FlightBookingDateType">
+		<xsd:annotation>
+			<xsd:documentation>ISO format: yyyy-mm-dd</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="common:DateType"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="FlightBookingTimeType">
+		<xsd:annotation>
+			<xsd:documentation>ISO format: hh:mm</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="common:TimeType"/>
+	</xsd:simpleType>
+	<xsd:complexType name="FlightType">
+		<xsd:annotation>
+			<xsd:documentation>Booked flights group</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="elementNumber" type="common:ElementNumberType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>PNR element number.  Example: 1</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="marketingCarrier" type="tns:CarrierType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Flight marketing carrier group</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="operatingCarrier" type="tns:CarrierType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Flight carrier group</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="equipment" type="tns:EquipmentType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Flight equipment group</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="departure" type="airport:FlightGroupType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Flight departure group</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="arrival" type="airport:FlightGroupType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Flight arrival group</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="flightDuration" type="common:TimeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Segment total flying time.  Example: 12:30</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="electronicTicketingIndicator" type="tns:ElectronicTicketingIndicatorType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Electronic ticketing indicator.  Values are:
+Y = eticket can be issued
+N = no eticket possible
+Example: Y</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ticketlessIndicator" type="tns:TicketlessIndicatorType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Fare can be purchased without issuing a ticket.  Values are:
+Y = Ticketless purchase possible
+N = Ticketless purchase not possible
+Example: Y</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="instantPurchaseIndicator" type="tns:InstantPurchaseIndicatorType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Instant Purchase indicator.  Values are:
+CC = Purchase is immediately charged to CC
+AP = Purchase is using AirPass credit(s)
+PP = Purchase is charged via PayPal (future use)
+N = not an instant purchase (default)
+
+Example: CC</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="information" type="common:TextType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="stops" type="tns:StopType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Ground and Flight information for the intermediate stop(s) of this flight.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="actionCode" type="tns:ActionCodeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Identifies for HK codes if the sell is confirmed (sold in carrier system). Values are:
+K - confirmed
+U - unknown</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="flightNumber" type="tns:FlightNumberWithSuffixType" minOccurs="0"/>
+			<xsd:element name="classes" type="tns:ClassesType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="originDestinationID" type="tns:OriginDestinationIDType">
+			<xsd:annotation>
+				<xsd:documentation>Specifies a group of flights per origin destination. 
+Example: OD1</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="flownIndicator" type="tns:FlownIndicatorType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Segment flown indicator.  Values are:
+Y = Yes
+N = No
+Example: Y</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="marriedSegment" type="tns:MarriedSegmentType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Indicates married segment.  Values are: 
+B= beginning of married segments group
+I = intermediate flight segments of married seg
+E = end of married segments group
+Example: B
+</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="marriedRef" type="tns:MarriedRefType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Identifies to which "married group" the segment belongs (in case of multiple married segment groups)
+
+Example: 1</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="optionalFlightType" type="tns:OptionalFlightType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Optional flight type.  This is used to specify passive or open segments.  Values are:
+P = Passive
+O = Open
+S = Service (passive info segment, supported on Worldspan as TVL and Amadeus as service segment).
+
+If type is set to O (Open segment) then departure date/time, arrival date/time and flight number don't have to be set.
+
+Example: P</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="connectionIndicator" type="tns:CnxxIndicatorType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Connection indicator.  Example: Y = Yes, N = No</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="checkInFlag" type="tns:CheckInFlagIndicatorType">
+			<xsd:annotation>
+				<xsd:documentation>Values are:
+C = CheckIn qualified
+A = under Airport Ctrl</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="flightRefKey" type="tns:FlightRefKeyType">
+			<xsd:annotation>
+				<xsd:documentation>Unique ID to bind request and response, allows the UI to associate RQ and RS with an arbitrary values</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="secureFlight" type="tns:SecureFlightType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Indicates if Secure Flight data is required for this flight.  
+Values:
+Y = Secure flight data must be provided
+N = (Default) flight does not require Secure Flight data</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="bookingDate" type="tns:FlightBookingDateType">
+			<xsd:annotation>
+				<xsd:documentation>ISO format: yyyy-mm-dd</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="bookingTime" type="tns:FlightBookingTimeType">
+			<xsd:annotation>
+				<xsd:documentation>ISO format: hh:mm</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="CarrierType">
+		<xsd:sequence>
+			<xsd:element name="airline" type="airline:AirlineType"/>
+			<xsd:element name="flightNumber" type="tns:FlightNumberWithSuffixType">
+				<xsd:annotation>
+					<xsd:documentation>Flight number - an integer value within the range of [0,9999].
+
+Example: 1234</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="AirlineNameType">
+		<xsd:restriction base="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation>Airline name.  Example: American Airline</xsd:documentation>
+			</xsd:annotation>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="FlightNumberWithSuffixType">
+		<xsd:annotation>
+			<xsd:documentation>A flight number with optional suffix letter. Flight numbers are integer values within the range of [0,9999]. 
+
+Example: 1234</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="flightNumber" type="tns:FlightNumberTypeType"/>
+		</xsd:sequence>
+		<xsd:attribute name="Suffix" type="tns:SuffixType">
+			<xsd:annotation>
+				<xsd:documentation>Flight number alpha qualifier.  
+Values are:
+A
+B
+C
+D
+
+Example: A</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:simpleType name="SuffixType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="A"/>
+			<xsd:enumeration value="B"/>
+			<xsd:enumeration value="C"/>
+			<xsd:enumeration value="D"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="FlightNumberTypeType">
+		<xsd:annotation>
+			<xsd:documentation>A flight number. Flight numbers are integer values within the range of [0-9999]. Example: 1234</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:integer">
+			<xsd:minInclusive value="0"/>
+			<xsd:maxInclusive value="9999"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="FlightNumberType" type="tns:FlightNumberWithSuffixType">
+		<xsd:annotation>
+			<xsd:documentation>Flight number - an integer value within the range of [0,9999].
+
+Example: 1234</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:simpleType name="AirlineCodeType">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="CodeType">
+		<xsd:restriction base="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation>Error code or equipment type code.  Example: 0104 (error code), 747 (equipment code)</xsd:documentation>
+			</xsd:annotation>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="EquipmentNameType">
+		<xsd:restriction base="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation>Equipment name.  Example: Boeing 747 series</xsd:documentation>
+			</xsd:annotation>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="equipment" type="tns:EquipmentType">
+		<xsd:annotation>
+			<xsd:documentation>Flight equipment group</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="EquipmentType">
+		<xsd:annotation>
+			<xsd:documentation>Flight equipment group</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="code" type="tns:CodeType">
+				<xsd:annotation>
+					<xsd:documentation>Error code or equipment type code.  Example: 0104 (error code), 747 (equipment code)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="name" type="tns:EquipmentNameType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Equipment name.  Example: Boeing 747 series</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="AircraftType" type="tns:AircraftTypeType">
+			<xsd:annotation>
+				<xsd:documentation>Airline specific 'physical aircraft type'
+
+Example:  757</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:simpleType name="AircraftTypeType">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:complexType name="FlightSearchType">
+		<xsd:annotation>
+			<xsd:documentation>Flight group for search</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="elementNumber" type="common:ElementNumberType" minOccurs="0"/>
+			<xsd:element name="carrier" type="tns:CarrierType">
+				<xsd:annotation>
+					<xsd:documentation>Flight details</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="departureAirport" type="airport:AirportType" minOccurs="0"/>
+			<xsd:element name="departureDate" type="common:DateType"/>
+			<xsd:element name="departureTime" type="common:TimeType" minOccurs="0"/>
+			<xsd:element name="arrivalAirport" type="airport:AirportType" minOccurs="0"/>
+			<xsd:element name="arrivalDate" type="common:DateType" minOccurs="0"/>
+			<xsd:element name="arrivalTime" type="common:TimeType" minOccurs="0"/>
+			<xsd:element name="classes" type="tns:ClassesType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ClassesType">
+		<xsd:annotation>
+			<xsd:documentation>Flight classes group</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="classOfService" type="tns:ClassOfServiceType">
+				<xsd:annotation>
+					<xsd:documentation> Basic definition of air  ClassOfService. Alpha-coded. Usually single char.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="status" type="tns:StatusType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Numeric status (available seats).  Values are: A = Seats are available, L = Waitlist Open for a segment, C = Waitlist closed, R = Seats on request only to airline, S = waitlist closed, 0 - 9 = number of at least available seats, 'empty' = no information.  Example: 9</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="priceClass" type="tns:PriceClassType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Name of PriceClass/Branded Fare.Example: TANGO</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="StatusType">
+		<xsd:annotation>
+			<xsd:documentation>Numeric status (available seats).  Values are: A = Seats are available, L = Waitlist Open for a segment, C = Waitlist closed, R = Seats on request only to airline, S = waitlist closed, 0 - 9 = number of at least available seats, 'empty' = no information.  Example: 9</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="PriceClassType">
+		<xsd:annotation>
+			<xsd:documentation>Name of PriceClass/Branded Fare.Example: TANGO</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+</xsd:schema>

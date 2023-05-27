@@ -1,0 +1,38 @@
+{
+ "enabled": true,
+
+  "title": "DARWIN",
+  "description": "Darwin Board",
+  
+  "layout": {
+      "title": false,
+      "customJS" : ["jquery.peity.js","moment.js","moment-timezone-with-data.min.js"],
+      "widgets" : [
+          {"row" : 1, "col" : 1, "width" : 4, "height" : 3, "widget" : "displayjson",    "job" : "displayjsonjob", "config": "job"},
+		  {"row" : 1, "col" : 5, "width" : 2, "height" : 3, "widget" : "displayjsonwp",  "job" : "displayjsonjobwp","config": "job_WP"},
+		  {"row" : 2, "col" : 1, "width" : 6, "height" : 1, "widget" : "displayjsonapu", "job" : "displayjsonjobapu","config": "job_APU"}
+      ]
+  },
+
+  "config" : {
+
+     "job" : {
+        "interval" : 60000,
+        "widgetTitle" : "Maintenix Dashboard",
+		"location":"DRW",
+		"port":"DARWIN",
+		"TZ":"AUSTRALIA/DARWIN"
+      },
+	  "job_WP" : {
+        "interval" : 60000,
+        "widgetTitle" : "Workpackage Details",
+		"locationWP":"DRW",
+		"TZWP":"AUSTRALIA/DARWIN"
+      },
+	  "job_APU" : {
+        "interval" : 10000,
+        "widgetTitle" : "APU Alerting dashboard",
+		"locationAPU":"DRW"
+      }
+  }
+}
